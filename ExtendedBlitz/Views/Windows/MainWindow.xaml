@@ -3,10 +3,15 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vw="clr-namespace:ExtendedBlitz.ViewModels"        
         xmlns:local="clr-namespace:ExtendedBlitz"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="{Binding Title}"
+        Width="800" Height="450">
+    <Window.DataContext>
+        <vw:MainWindowViewModel/>
+    </Window.DataContext>
     <Grid>
-        
+        <TextBox Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}" Width="130" Height="30" TextWrapping="Wrap"/>
     </Grid>
 </Window>
