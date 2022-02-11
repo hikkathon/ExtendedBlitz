@@ -12,6 +12,6 @@
         <vw:MainWindowViewModel/>
     </Window.DataContext>
     <Grid>
-        <TextBox Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}" Width="130" Height="30" TextWrapping="Wrap"/>
+        
     </Grid>
 </Window>
