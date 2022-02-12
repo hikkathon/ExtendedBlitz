@@ -1,6 +1,5 @@
-﻿using System;
+﻿using System.Runtime.CompilerServices;
 using System.ComponentModel;
-using System.Runtime.CompilerServices;
 
 namespace ExtendedBlitz.ViewModels.Base
 {

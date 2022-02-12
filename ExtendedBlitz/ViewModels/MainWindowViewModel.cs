@@ -1,7 +1,6 @@
-﻿using System;
-using System.Windows.Input;
+﻿using ExtendedBlitz.Infrastructure.Commands;
 using ExtendedBlitz.ViewModels.Base;
-using ExtendedBlitz.Infrastructure.Commands;
+using System.Windows.Input;
 using System.Windows;
 
 namespace ExtendedBlitz.ViewModels

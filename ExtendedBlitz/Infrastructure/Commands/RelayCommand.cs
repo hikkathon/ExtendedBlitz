@@ -1,5 +1,5 @@
-﻿using System;
-using ExtendedBlitz.Infrastructure.Commands.Base;
+﻿using ExtendedBlitz.Infrastructure.Commands.Base;
+using System;
 
 namespace ExtendedBlitz.Infrastructure.Commands
 {
