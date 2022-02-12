@@ -3,9 +3,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:fa5="http://schemas.fontawesome.com/icons/"
         xmlns:cmd="clr-namespace:ExtendedBlitz.Infrastructure.Commands"        
         xmlns:vw="clr-namespace:ExtendedBlitz.ViewModels"        
         xmlns:local="clr-namespace:ExtendedBlitz"
+        WindowStartupLocation="CenterScreen"
+        WindowState="{Binding CurWindowState, Mode=TwoWay}"
         mc:Ignorable="d"
         Title="{Binding Title}"
         Width="800" Height="450" MinWidth="800" MinHeight="450">
@@ -22,6 +25,9 @@
             </MenuItem>
             <MenuItem Header="Помощь">
                 <MenuItem Header="О Программе"/>
+                <MenuItem Header="Свернуть" Command="{Binding MinimizedWindowCommand}"/>
+                <MenuItem Header="Развернуть" Command="{Binding MaximizedWindowCommand}"/>
+                <MenuItem Header="Свернуть окно" Command="{Binding NormalWindowCommand}"/>
             </MenuItem>
         </Menu>
         <StatusBar DockPanel.Dock="Bottom">
@@ -29,7 +35,10 @@
                 <ProgressBar Width="120" Height="14" Value="0"/>
             </StatusBarItem>
             <StatusBarItem>
-                <TextBlock Text="{Binding Status}"/>
+                <StackPanel Orientation="Horizontal">
+                    <fa5:ImageAwesome Icon="Regular_File" Height="13" Margin="0 0 5 0"/>
+                    <TextBlock Text="{Binding Status}"/>                    
+                </StackPanel>
             </StatusBarItem>
         </StatusBar>
         <TabControl Margin="0 5 0 5">
