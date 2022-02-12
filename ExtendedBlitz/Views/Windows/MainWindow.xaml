@@ -11,7 +11,24 @@
     <Window.DataContext>
         <vw:MainWindowViewModel/>
     </Window.DataContext>
-    <Grid>
-        
-    </Grid>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Файл">
+                <MenuItem Header="Выход"/>
+            </MenuItem>
+            <MenuItem Header="Помощь"></MenuItem>
+        </Menu>
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem>
+                <ProgressBar Width="120" Height="14" Value="30"/>
+            </StatusBarItem>
+            <StatusBarItem>
+                <TextBlock Text="Готово!"/>
+            </StatusBarItem>
+        </StatusBar>
+        <TabControl>
+            <TabItem Header="Вкладка 1"></TabItem>
+            <TabItem Header="Вкладка 2"></TabItem>
+        </TabControl>
+    </DockPanel>
 </Window>
