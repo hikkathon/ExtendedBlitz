@@ -14,16 +14,18 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Файл">
-                <MenuItem Header="Выход"/>
+                <MenuItem Header="Выход" Command="{Binding CloseApplicationCommand}"/>
             </MenuItem>
-            <MenuItem Header="Помощь"></MenuItem>
+            <MenuItem Header="Помощь">
+                <MenuItem Header="О Программе"/>
+            </MenuItem>
         </Menu>
         <StatusBar DockPanel.Dock="Bottom">
             <StatusBarItem>
-                <ProgressBar Width="120" Height="14" Value="30"/>
+                <ProgressBar Width="120" Height="14" Value="0"/>
             </StatusBarItem>
             <StatusBarItem>
-                <TextBlock Text="Готово!"/>
+                <TextBlock Text="{Binding Status}"/>
             </StatusBarItem>
         </StatusBar>
         <TabControl>
