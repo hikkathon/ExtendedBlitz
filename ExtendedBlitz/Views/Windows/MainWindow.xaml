@@ -8,18 +8,17 @@
         xmlns:local="clr-namespace:ExtendedBlitz"
         mc:Ignorable="d"
         Title="{Binding Title}"
-        Width="800" Height="450">
+        Width="800" Height="450" MinWidth="800" MinHeight="450">
     <Window.DataContext>
         <vw:MainWindowViewModel/>
     </Window.DataContext>
+    <Window.Resources>
+        <cmd:CloseApplicationCommand x:Key="CloseApplicationCommand"/>
+    </Window.Resources>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Файл">
-                <MenuItem Header="Выход">
-                    <MenuItem.Command>
-                        <cmd:CloseApplicationCommand/>
-                    </MenuItem.Command>
-                </MenuItem>
+                <MenuItem Header="Выход" Command="{StaticResource CloseApplicationCommand}"/>
             </MenuItem>
             <MenuItem Header="Помощь">
                 <MenuItem Header="О Программе"/>
@@ -33,7 +32,7 @@
                 <TextBlock Text="{Binding Status}"/>
             </StatusBarItem>
         </StatusBar>
-        <TabControl>
+        <TabControl Margin="0 5 0 5">
             <TabItem Header="Вкладка 1"></TabItem>
             <TabItem Header="Вкладка 2"></TabItem>
         </TabControl>

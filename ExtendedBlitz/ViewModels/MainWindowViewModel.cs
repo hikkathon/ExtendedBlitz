@@ -33,30 +33,9 @@ namespace ExtendedBlitz.ViewModels
 
         #endregion
 
-        #region Команды
-
-        #region CloseApplicationCommand
-
-        public ICommand CloseApplicationCommand { get; }
-
-        private bool CanCloseApplicationCommandExecuted(object p) => true;
-
-        private void OnCloseApplicationCommandExecuted(object p)
-        {
-            Application.Current.Shutdown();
-        }
-
-        #endregion
-
-        #endregion
-
         public MainWindowViewModel()
         {
-            #region Команды
 
-            CloseApplicationCommand = new RelayCommand(OnCloseApplicationCommandExecuted, CanCloseApplicationCommandExecuted);
-
-            #endregion
         }
     }
 }
