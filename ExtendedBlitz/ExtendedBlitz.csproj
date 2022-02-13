@@ -84,6 +84,7 @@
     <Compile Include="Models\WoTBlitz\Personal data\Statistic\All.cs" />
     <Compile Include="Models\WoTBlitz\Personal data\Statistic\Clan.cs" />
     <Compile Include="Models\WoTBlitz\Personal data\Statistic\Rating.cs" />
+    <Compile Include="Services\DataService.cs" />
     <Compile Include="ViewModels\Base\ViewModelBase.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Views\Windows\MainWindow.xaml.cs">
@@ -121,7 +122,6 @@
   <ItemGroup>
     <Folder Include="Data\" />
     <Folder Include="Models\Abstract\" />
-    <Folder Include="Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

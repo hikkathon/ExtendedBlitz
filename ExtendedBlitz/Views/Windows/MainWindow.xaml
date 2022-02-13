@@ -19,6 +19,9 @@
     <Window.Resources>
         <cmd:CloseApplicationCommand x:Key="CloseApplicationCommand"/>
     </Window.Resources>
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="5"/>
+    </WindowChrome.WindowChrome>
     <DockPanel>
         <Menu DockPanel.Dock="Top" Margin="5 0 5 0" Background="White">
             <MenuItem>
