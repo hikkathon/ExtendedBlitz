@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Linq;
-using System.Text;
-using System;
+﻿using System.Threading.Tasks;
 using System.Net.Http;
 using ExtendedBlitz.Models.WoTBlitz.Personal_data;
 using Newtonsoft.Json;
@@ -27,7 +23,7 @@ namespace ExtendedBlitz.Services
 
         private async Task<string> GetDataStream()
         {
-            var response = await client.GetAsync($"https://api.wotblitz.ru/wotb/account/info/?application_id={application_id}&account_id={account_id}&extra=statistics.rating&language={region}");
+            var response = await client.GetAsync($"https://api.wotblitz.ru/wotb/account/info/?application_id={application_id}&account_id={account_id}&extra=statistics.rating&language={region}");            
             return await response.Content.ReadAsStringAsync();
         }
 

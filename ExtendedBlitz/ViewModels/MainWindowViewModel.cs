@@ -1,6 +1,10 @@
 ﻿using ExtendedBlitz.Infrastructure.Commands;
 using ExtendedBlitz.ViewModels.Base;
+using ExtendedBlitz.Services;
+using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Threading;
+using System.Net.Http;
 using System.Windows;
 
 namespace ExtendedBlitz.ViewModels
@@ -88,6 +92,31 @@ namespace ExtendedBlitz.ViewModels
         private void OnNormalWindowCommandExecuted(object p)
         {
             CurWindowState = WindowState.Normal;
+
+            Status = "Стартую!";
+
+            var tcs = new CancellationTokenSource();
+            var token = tcs.Token;
+            Task task = new Task(async () =>
+            {
+                string application_id = "07ac358d831595916aca265c2f14750c";
+                string account_id = "71941826";
+                string region = "ru";
+
+                using (var client = new HttpClient())
+                {
+                    int i = 0;
+                    var data_service = new DataService(client, application_id, account_id, region);
+                    while (!token.IsCancellationRequested)
+                    {
+                        var player = data_service.GetData();
+                        Status = $"{player.data.account.nickname}({i++})";
+                        await Task.Delay(500);
+                    }
+                }
+            }, token);
+
+            task.Start();
         }
 
         #endregion
@@ -99,9 +128,9 @@ namespace ExtendedBlitz.ViewModels
             #region Команды
 
             CloseApplicationCommand = new RelayCommand(OnCloseApplicationCommandExecuted, CanCloseApplicationCommandExecuted);
-            MinimizedWindowCommand = new RelayCommand(OnMinimizedWindowCommandExecuted, CanMinimizedWindowCommandExecuted);
-            MaximizedWindowCommand = new RelayCommand(OnMaximizedWindowCommandExecuted, CanMaximizedWindowCommandExecuted);
-            NormalWindowCommand = new RelayCommand(OnNormalWindowCommandExecuted, CanNormalWindowCommandExecuted);
+            MinimizedWindowCommand  = new RelayCommand(OnMinimizedWindowCommandExecuted, CanMinimizedWindowCommandExecuted);
+            MaximizedWindowCommand  = new RelayCommand(OnMaximizedWindowCommandExecuted, CanMaximizedWindowCommandExecuted);
+            NormalWindowCommand     = new RelayCommand(OnNormalWindowCommandExecuted, CanNormalWindowCommandExecuted);
 
             #endregion
         }
