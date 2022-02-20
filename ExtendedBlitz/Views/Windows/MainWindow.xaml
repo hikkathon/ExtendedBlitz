@@ -11,7 +11,7 @@
         WindowState="{Binding CurWindowState, Mode=TwoWay}"
         mc:Ignorable="d"
         Title="{Binding Title}"
-        Width="800" Height="450" MinWidth="800" MinHeight="450"
+        Width="800" Height="495" MinWidth="800" MinHeight="495"
         WindowStyle="None">
     <Window.DataContext>
         <vw:MainWindowViewModel/>
@@ -54,7 +54,95 @@
             </StatusBarItem>
         </StatusBar>
         <TabControl Margin="0 5 0 5">
-            <TabItem Header="Вкладка 1"></TabItem>
+            <TabItem Header="Послебоевая статистика">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="250"/>
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <GroupBox Grid.Column="0" Header="Сессии">
+                        <ListBox ItemsSource="{Binding Sessions}"
+                                 SelectedItem="{Binding SelectSession}"
+                                 SelectedIndex="0">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate DataType="Session">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Name}"/>
+                                        <TextBlock Text="{Binding Battles.Count, StringFormat = [Боев: {0}]}" Margin="3 0 0 0"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </GroupBox>
+                    <GroupBox Grid.Column="1" 
+                              Header="Бои">
+                        <DataGrid 
+                            ItemsSource="{Binding SelectSession.Battles}" 
+                            AutoGenerateColumns="False" 
+                            IsReadOnly="True"
+                            GridLinesVisibility="Vertical"
+                            VerticalGridLinesBrush="DarkGray"
+                            AlternatingRowBackground="WhiteSmoke">
+                            <DataGrid.Columns>
+                                <DataGridTemplateColumn Header="Статус" Width="*">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <WrapPanel>
+                                                <Ellipse Name="myEllipse" Height="7" Width="7" Margin="5 0"/>
+                                                <TextBlock Text="{Binding status}"/>
+                                            </WrapPanel>
+                                            <DataTemplate.Triggers>
+                                                <DataTrigger Binding="{Binding status}" Value="Победа">
+                                                    <Setter TargetName="myEllipse" Property="Fill" Value="Green"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding status}" Value="Поражение">
+                                                    <Setter TargetName="myEllipse" Property="Fill" Value="Red"/>
+                                                </DataTrigger>
+                                            </DataTemplate.Triggers>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <!--<DataGridTextColumn Header="Статус" Binding="{Binding status}" Width="*"/>-->
+                                <!--<DataGridTextColumn Header="Обнаружил" Binding="{Binding spotted}"/>
+                                <DataGridTextColumn Header="Танк(Макс фраг)" Binding="{Binding max_xp_tank_id}"/>
+                                <DataGridTextColumn Header="Попаданий" Binding="{Binding hits}"/>
+                                <DataGridTextColumn Header="Количество уничтоженной техники" Binding="{Binding frags}"/>
+                                <DataGridTextColumn Header="Максимальный опыт за бой" Binding="{Binding max_xp}"/>
+                                <DataGridTextColumn Header="Техника, на которой получен максимальный опыт за бой" Binding="{Binding max_frags_tank_id}"/>
+                                <DataGridTextColumn Header="Количество побед" Binding="{Binding wins}"/>
+                                <DataGridTextColumn Header="Количество поражений" Binding="{Binding losses}"/>
+                                <DataGridTextColumn Header="Очки защиты базы" Binding="{Binding capture_points}"/>
+                                <DataGridTextColumn Header="Количество боёв" Binding="{Binding battles}"/>
+                                <DataGridTextColumn Header="Нанесённый урон" Binding="{Binding damage_dealt}"/>
+                                <DataGridTextColumn Header="Полученный урон" Binding="{Binding damage_received}"/>
+                                <DataGridTextColumn Header="Максимум уничтожено за бой" Binding="{Binding max_frags}"/>
+                                <DataGridTextColumn Header="Произведено выстрелов" Binding="{Binding shots}"/>
+                                <DataGridTextColumn Header="Количество уничтоженной техники (уровень >=8)" Binding="{Binding frags8p}"/>
+                                <DataGridTextColumn Header="Суммарный опыт" Binding="{Binding xp}"/>
+                                <DataGridTextColumn Header="Выжил в боях и победил" Binding="{Binding win_and_survived}"/>
+                                <DataGridTextColumn Header="Выжил в боях" Binding="{Binding survived_battles}"/>
+                                <DataGridTextColumn Header="Очки защиты базы" Binding="{Binding dropped_capture_points}"/>-->
+                            </DataGrid.Columns>
+                            <DataGrid.RowDetailsTemplate>
+                                <DataTemplate>
+                                    <StackPanel Margin="15 0">
+                                        <TextBlock Text="Режим: "/>
+                                        <TextBlock Text="Победил/Боев: "/>
+                                        <TextBlock Text="Убил: "/>
+                                        <TextBlock Text="Умер: "/>
+                                        <TextBlock Text="Попаданий/Выстрелов: "/>
+                                        <TextBlock Text="Нанесенный урон: "/>
+                                        <TextBlock Text="Полученный урон: "/>
+                                        <TextBlock Text="Обнаружил: "/>
+                                        <TextBlock Text="Очки защиты базы: "/>
+                                        <TextBlock Text="Очки захвата базы: "/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGrid.RowDetailsTemplate>
+                        </DataGrid>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
             <TabItem Header="Вкладка 2"></TabItem>
         </TabControl>
     </DockPanel>

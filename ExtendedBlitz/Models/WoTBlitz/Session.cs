@@ -1,0 +1,38 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace ExtendedBlitz.Models.WoTBlitz
+{
+    internal class Battle
+    {
+        public int id { get; set; }
+        public string status { get; set; } // победа/поражение
+        public int spotted { get; set; }
+        public int max_frags_tank_id { get; set; }
+        public int hits { get; set; }
+        public int frags { get; set; }
+        public int max_xp { get; set; }
+        public int max_xp_tank_id { get; set; }
+        public int wins { get; set; }
+        public int losses { get; set; }
+        public int capture_points { get; set; }
+        public int battles { get; set; }
+        public int damage_dealt { get; set; }
+        public int damage_received { get; set; }
+        public int max_frags { get; set; }
+        public int shots { get; set; }
+        public int frags8p { get; set; }
+        public int xp { get; set; }
+        public int win_and_survived { get; set; }
+        public int survived_battles { get; set; }
+        public int dropped_capture_points { get; set; }
+    }
+
+    internal class Session
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public DateTime TimeSession { get; set; }
+        public ICollection<Battle> Battles { get; set; }
+    }
+}

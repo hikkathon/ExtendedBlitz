@@ -75,6 +75,7 @@
     <Compile Include="Infrastructure\Commands\Base\CommandBase.cs" />
     <Compile Include="Infrastructure\Commands\CloseApplicationCommand.cs" />
     <Compile Include="Infrastructure\Commands\RelayCommand.cs" />
+    <Compile Include="Models\WoTBlitz\Session.cs" />
     <Compile Include="Models\WoTBlitz\Personal data\Account.cs" />
     <Compile Include="Models\WoTBlitz\Personal data\Data.cs" />
     <Compile Include="Models\WoTBlitz\Personal data\Meta.cs" />
