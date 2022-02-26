@@ -11,7 +11,7 @@
         WindowState="{Binding CurWindowState, Mode=TwoWay}"
         mc:Ignorable="d"
         Title="{Binding Title}"
-        Width="800" Height="495" MinWidth="800" MinHeight="495"
+        Width="800" Height="480" MinWidth="800" MinHeight="480"
         WindowStyle="None">
     <Window.DataContext>
         <vw:MainWindowViewModel/>
@@ -23,7 +23,7 @@
         <WindowChrome CaptionHeight="5"/>
     </WindowChrome.WindowChrome>
     <DockPanel>
-        <Menu DockPanel.Dock="Top" Margin="5 0 5 0" Background="White">
+        <Menu DockPanel.Dock="Top" Margin="5 5 5 0" Background="WhiteSmoke">
             <MenuItem>
                 <MenuItem.Icon>
                     <fa5:ImageAwesome Icon="Solid_User" Height="16"/>
@@ -40,6 +40,22 @@
                 <MenuItem Header="Свернуть" Command="{Binding MinimizedWindowCommand}"/>
                 <MenuItem Header="Развернуть" Command="{Binding MaximizedWindowCommand}"/>
                 <MenuItem Header="Свернуть окно" Command="{Binding NormalWindowCommand}"/>
+                <Separator/>
+                <MenuItem Header="ВКонтакте">
+                    <MenuItem.Icon>
+                        <fa5:ImageAwesome Icon="Brands_Vk"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Twitch">
+                    <MenuItem.Icon>
+                        <fa5:ImageAwesome Icon="Brands_Twitch"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Youtube">
+                    <MenuItem.Icon>
+                        <fa5:ImageAwesome Icon="Brands_Youtube"/>
+                    </MenuItem.Icon>
+                </MenuItem>
             </MenuItem>
         </Menu>
         <StatusBar DockPanel.Dock="Bottom">
@@ -89,21 +105,21 @@
                                         <DataTemplate>
                                             <WrapPanel>
                                                 <Ellipse Name="myEllipse" Height="7" Width="7" Margin="5 0"/>
-                                                <TextBlock Text="{Binding status}"/>
+                                                <TextBlock Text="{Binding Status}"/>
                                             </WrapPanel>
                                             <DataTemplate.Triggers>
-                                                <DataTrigger Binding="{Binding status}" Value="Победа">
+                                                <DataTrigger Binding="{Binding Status}" Value="Победа">
                                                     <Setter TargetName="myEllipse" Property="Fill" Value="Green"/>
                                                 </DataTrigger>
-                                                <DataTrigger Binding="{Binding status}" Value="Поражение">
+                                                <DataTrigger Binding="{Binding Status}" Value="Поражение">
                                                     <Setter TargetName="myEllipse" Property="Fill" Value="Red"/>
                                                 </DataTrigger>
                                             </DataTemplate.Triggers>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
-                                <!--<DataGridTextColumn Header="Статус" Binding="{Binding status}" Width="*"/>-->
-                                <!--<DataGridTextColumn Header="Обнаружил" Binding="{Binding spotted}"/>
+                                <!--<DataGridTextColumn Header="Статус" Binding="{Binding Status}" Width="*"/>
+                                <DataGridTextColumn Header="Обнаружил" Binding="{Binding Player.data.account.statistics.all.spotted}"/>
                                 <DataGridTextColumn Header="Танк(Макс фраг)" Binding="{Binding max_xp_tank_id}"/>
                                 <DataGridTextColumn Header="Попаданий" Binding="{Binding hits}"/>
                                 <DataGridTextColumn Header="Количество уничтоженной техники" Binding="{Binding frags}"/>
@@ -126,16 +142,34 @@
                             <DataGrid.RowDetailsTemplate>
                                 <DataTemplate>
                                     <StackPanel Margin="15 0">
-                                        <TextBlock Text="Режим: "/>
-                                        <TextBlock Text="Победил/Боев: "/>
-                                        <TextBlock Text="Убил: "/>
-                                        <TextBlock Text="Умер: "/>
-                                        <TextBlock Text="Попаданий/Выстрелов: "/>
-                                        <TextBlock Text="Нанесенный урон: "/>
-                                        <TextBlock Text="Полученный урон: "/>
-                                        <TextBlock Text="Обнаружил: "/>
-                                        <TextBlock Text="Очки защиты базы: "/>
-                                        <TextBlock Text="Очки захвата базы: "/>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition/>
+                                                <ColumnDefinition/>
+                                                <ColumnDefinition/>
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Grid.Column="0">
+                                                <TextBlock Text="{Binding Player.data.account.statistics.all.spotted, StringFormat = spotted: {0}}"/>
+                                                <!--<TextBlock Text="{Binding Player.data.account.statistics.all.max_frags_tank_id, StringFormat = max_frags_tank_id: {0}}"/>-->
+                                                <TextBlock Text="{Binding Player.data.account.statistics.all.hits, StringFormat = hits: {0}}"/>
+                                                <TextBlock Text="{Binding Player.data.account.statistics.all.frags, StringFormat = frags: {0}}"/>
+                                                <!--<TextBlock Text="{Binding Player.data.account.statistics.all.max_xp, StringFormat = max_xp: {0}}"/>-->
+                                                <!--<TextBlock Text="{Binding Player.data.account.statistics.all.max_xp_tank_id, StringFormat = max_xp_tank_id: {0}}"/>-->
+                                                <!--<TextBlock Text="{Binding Player.data.account.statistics.all.wins, StringFormat = wins: {0}}"/>-->
+                                                <!--<TextBlock Text="{Binding Player.data.account.statistics.all.losses, StringFormat = losses: {0}}"/>-->
+                                                <TextBlock Text="{Binding Player.data.account.statistics.all.capture_points, StringFormat = capture_points: {0}}"/>
+                                                <!--<TextBlock Text="{Binding Player.data.account.statistics.all.battles, StringFormat = battles: {0}}"/>-->
+                                                <TextBlock Text="{Binding Player.data.account.statistics.all.damage_dealt, StringFormat = damage_dealt: {0}}"/>
+                                                <TextBlock Text="{Binding Player.data.account.statistics.all.damage_received, StringFormat = damage_received: {0}}"/>
+                                                <!--<TextBlock Text="{Binding Player.data.account.statistics.all.max_frags, StringFormat = max_frags: {0}}"/>-->
+                                                <TextBlock Text="{Binding Player.data.account.statistics.all.shots, StringFormat = shots: {0}}"/>
+                                                <!--<TextBlock Text="{Binding Player.data.account.statistics.all.frags8p, StringFormat = frags8p: {0}}"/>-->
+                                                <TextBlock Text="{Binding Player.data.account.statistics.all.xp, StringFormat = xp: {0}}"/>
+                                                <!--<TextBlock Text="{Binding Player.data.account.statistics.all.win_and_survived, StringFormat = win_and_survived: {0}}"/>-->
+                                                <!--<TextBlock Text="{Binding Player.data.account.statistics.all.survived_battles, StringFormat = survived_battles: {0}}"/>-->
+                                                <TextBlock Text="{Binding Player.data.account.statistics.all.dropped_capture_points, StringFormat = dropped_capture_points: {0}}"/>
+                                            </StackPanel>
+                                        </Grid>
                                     </StackPanel>
                                 </DataTemplate>
                             </DataGrid.RowDetailsTemplate>
@@ -143,7 +177,8 @@
                     </GroupBox>
                 </Grid>
             </TabItem>
-            <TabItem Header="Вкладка 2"></TabItem>
+            <TabItem Header="Дамаг панель"></TabItem>
+            <TabItem Header="Оленемер"></TabItem>
         </TabControl>
     </DockPanel>
 </Window>

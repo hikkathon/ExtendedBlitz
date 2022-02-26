@@ -1,8 +1,11 @@
-﻿using System.Threading.Tasks;
-using System.Net.Http;
-using ExtendedBlitz.Models.WoTBlitz.Personal_data;
-using Newtonsoft.Json;
+﻿using ExtendedBlitz.Models.WoTBlitz.Personal_data;
+using ExtendedBlitz.Models.WoTBlitz;
+using System.Threading.Tasks;
 using System.Threading;
+using System.Net.Http;
+using Newtonsoft.Json;
+using System.IO;
+using System.Collections;
 
 namespace ExtendedBlitz.Services
 {
@@ -21,6 +24,8 @@ namespace ExtendedBlitz.Services
             this.region = region;
         }
 
+        public DataService() { }
+
         private async Task<string> GetDataStream()
         {
             var response = await client.GetAsync($"https://api.wotblitz.ru/wotb/account/info/?application_id={application_id}&account_id={account_id}&extra=statistics.rating&language={region}");            
@@ -36,6 +41,11 @@ namespace ExtendedBlitz.Services
             string json = responseBody.Remove(index, substring.Length).Insert(index, "account");
 
             return JsonConvert.DeserializeObject<Player>(json);
+        }
+
+        public void SaveToJson(ICollection session)
+        {
+            File.WriteAllText($"Data\\Sessions.json", JsonConvert.SerializeObject(session));
         }
     }
 }

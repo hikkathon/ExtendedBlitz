@@ -1,7 +1,11 @@
-﻿using ExtendedBlitz.Infrastructure.Commands;
+﻿using ExtendedBlitz.Models.WoTBlitz.Personal_data.Statistic;
+using ExtendedBlitz.Models.WoTBlitz.Personal_data;
+using ExtendedBlitz.Infrastructure.Commands;
 using System.Collections.ObjectModel;
 using ExtendedBlitz.ViewModels.Base;
 using ExtendedBlitz.Models.WoTBlitz;
+using System.Collections.Generic;
+using System.Windows.Threading;
 using ExtendedBlitz.Services;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -17,7 +21,12 @@ namespace ExtendedBlitz.ViewModels
     {
         /* ---------------------------------------------------------------------------------------------------- */
 
-        public ObservableCollection<Session> Sessions {get;}
+        public ObservableCollection<Session> Sessions { get; }
+        public ObservableCollection<Battle> Battles { get; }
+
+        ICollection<Battle> battles_1;
+        ICollection<Session> sessions_1;
+        Dispatcher dispatcher;
 
         #region Заголовок окна
 
@@ -104,7 +113,7 @@ namespace ExtendedBlitz.ViewModels
 
         #region NormalWindowCommand
 
-        public ICommand NormalWindowCommand { get; }
+        public ICommand NormalWindowCommand { get; set; }
         private bool CanNormalWindowCommandExecuted(object p) => true;
         private void OnNormalWindowCommandExecuted(object p)
         {
@@ -112,27 +121,101 @@ namespace ExtendedBlitz.ViewModels
 
             Status = "Стартую!";
 
+
             var tcs = new CancellationTokenSource();
             var token = tcs.Token;
+            Player loop = new Player();
+            Player constant = new Player();
             Task task = new Task(async () =>
             {
                 string application_id = "07ac358d831595916aca265c2f14750c";
                 string account_id = "71941826";
                 string region = "ru";
 
+                bool isOpenSession = true;
+
+                int i = 0;
+                int battle_max_index = 0;
+                int session_max_index = 0;
+
                 using (var client = new HttpClient())
                 {
-                    int i = 0;
                     var data_service = new DataService(client, application_id, account_id, region);
+                    constant = data_service.GetData();
                     while (!token.IsCancellationRequested)
                     {
-                        var player = data_service.GetData();
-                        Status = $"{player.data.account.nickname}({i++})";
-                        await Task.Delay(500);
+                        loop = data_service.GetData();
+                        if (loop.data.account.statistics.all.battles > constant.data.account.statistics.all.battles)
+                        {
+                            string status = "Undefined";
+
+                            if (loop.data.account.statistics.all.wins > constant.data.account.statistics.all.wins)
+                                status = "Победа";
+                            else
+                                status = "Поражение";
+
+                            // Добавить бой
+                            #region Добавить бой
+                            dispatcher.Invoke(new Action(() =>
+                            {
+                                battle_max_index = Battles.Count + 1;
+                                var new_battle = new Battle
+                                {
+                                    Id = battle_max_index,
+                                    Status = status,
+                                    Player = Calculate.SubtractLoopOfConstant(constant, loop),
+                                };
+
+                                Battles.Add(new_battle);
+                            }));
+                            #endregion
+
+                            if (isOpenSession)
+                            {
+                                // добавить сессию
+                                #region Добавление сессии
+                                dispatcher.Invoke(new Action(() =>
+                                {
+                                    session_max_index = Sessions.Count + 1;
+                                    var new_session = new Session
+                                    {
+                                        Id = session_max_index,
+                                        Name = $"Session {session_max_index}",
+                                        Time = DateTime.Now,
+                                        Battles = new ObservableCollection<Battle>(Battles),
+                                    };
+
+                                    Sessions.Add(new_session);
+                                }));
+                                #endregion
+                                isOpenSession = false;
+                            }
+                            else
+                            {
+                                #region Добавить бой
+                                battle_max_index = Battles.Count + 1;
+                                var new_battle = new Battle
+                                {
+                                    Id = battle_max_index,
+                                    Status = status,
+                                    Player = Calculate.SubtractLoopOfConstant(constant, loop)
+                                };
+
+                                dispatcher.Invoke(new Action(() =>
+                                {
+                                    Sessions.ElementAt(session_max_index - 1).Battles.Add(new_battle);
+                                }));
+                                #endregion
+                            }
+
+                            constant = loop;
+                        }
+
+                        Status = $"{isOpenSession} Constant : {constant.data.account.statistics.all.battles} Loop : {loop.data.account.statistics.all.battles}({i++})";
+                        await Task.Delay(2000);
                     }
                 }
             }, token);
-
             task.Start();
         }
 
@@ -144,6 +227,8 @@ namespace ExtendedBlitz.ViewModels
 
         public MainWindowViewModel()
         {
+            dispatcher = Dispatcher.CurrentDispatcher;
+
             #region Команды
 
             CloseApplicationCommand = new RelayCommand(OnCloseApplicationCommandExecuted, CanCloseApplicationCommandExecuted);
@@ -153,42 +238,228 @@ namespace ExtendedBlitz.ViewModels
 
             #endregion
 
+            bool test1 = false;
+            bool test2 = true;
+
             Random rnd = new Random();
 
-            var battles = Enumerable.Range(1, 20).Select(i => new Battle
+            if (test1)
             {
-                id = i,
-                status = rnd.Next(-1,1) > rnd.Next(-1, 1) ? "Победа" : "Поражение",
-                spotted = rnd.Next(1, 20),
-                max_frags_tank_id = rnd.Next(1, 20),
-                hits = rnd.Next(1, 20),
-                frags = rnd.Next(1, 20),
-                max_xp = rnd.Next(1, 20),
-                max_xp_tank_id = rnd.Next(1, 20),
-                wins = rnd.Next(1, 20),
-                losses = rnd.Next(1, 20),
-                capture_points = rnd.Next(1, 20),
-                battles = rnd.Next(1, 20),
-                damage_dealt = rnd.Next(1, 20),
-                damage_received = rnd.Next(1, 20),
-                max_frags = rnd.Next(1, 20),
-                shots = rnd.Next(1, 20),
-                frags8p = rnd.Next(1, 20),
-                xp = rnd.Next(1, 20),
-                win_and_survived = rnd.Next(1, 20),
-                survived_battles = rnd.Next(1, 20),
-                dropped_capture_points = rnd.Next(1, 20),
-            });
 
-            var sessions = Enumerable.Range(1, 10).Select(i => new Session
+                var battles = Enumerable.Range(1, 10).Select(i => new Battle
+                {
+                    Id = i,
+                    Status = rnd.Next(-1, 1) > rnd.Next(-1, 1) ? "Победа" : "Поражение",
+                    Player = new Player()
+                    {
+                        status = "ok",
+                        meta = new Meta() { count = 1 },
+                        data = new Data()
+                        {
+                            account = new Account()
+                            {
+                                statistics = new Statistics()
+                                {
+                                    all = new All()
+                                    {
+                                        spotted = rnd.Next(1, 20),
+                                        max_frags_tank_id = rnd.Next(1, 20),
+                                        hits = rnd.Next(1, 20),
+                                        frags = rnd.Next(1, 20),
+                                        max_xp = rnd.Next(1, 20),
+                                        max_xp_tank_id = rnd.Next(1, 20),
+                                        wins = rnd.Next(1, 20),
+                                        losses = rnd.Next(1, 20),
+                                        capture_points = rnd.Next(1, 20),
+                                        battles = rnd.Next(1, 20),
+                                        damage_dealt = rnd.Next(1, 20),
+                                        damage_received = rnd.Next(1, 20),
+                                        max_frags = rnd.Next(1, 20),
+                                        shots = rnd.Next(1, 20),
+                                        frags8p = rnd.Next(1, 20),
+                                        xp = rnd.Next(1, 20),
+                                        win_and_survived = rnd.Next(1, 20),
+                                        survived_battles = rnd.Next(1, 20),
+                                        dropped_capture_points = rnd.Next(1, 20),
+                                    },
+                                    clan = new Clan()
+                                    {
+                                        spotted = rnd.Next(1, 20),
+                                        max_frags_tank_id = rnd.Next(1, 20),
+                                        hits = rnd.Next(1, 20),
+                                        frags = rnd.Next(1, 20),
+                                        max_xp = rnd.Next(1, 20),
+                                        max_xp_tank_id = rnd.Next(1, 20),
+                                        wins = rnd.Next(1, 20),
+                                        losses = rnd.Next(1, 20),
+                                        capture_points = rnd.Next(1, 20),
+                                        battles = rnd.Next(1, 20),
+                                        damage_dealt = rnd.Next(1, 20),
+                                        damage_received = rnd.Next(1, 20),
+                                        max_frags = rnd.Next(1, 20),
+                                        shots = rnd.Next(1, 20),
+                                        frags8p = rnd.Next(1, 20),
+                                        xp = rnd.Next(1, 20),
+                                        win_and_survived = rnd.Next(1, 20),
+                                        survived_battles = rnd.Next(1, 20),
+                                        dropped_capture_points = rnd.Next(1, 20),
+                                    },
+                                    rating = new Rating()
+                                    {
+                                        spotted = rnd.Next(1, 20),
+                                        hits = rnd.Next(1, 20),
+                                        frags = rnd.Next(1, 20),
+                                        wins = rnd.Next(1, 20),
+                                        losses = rnd.Next(1, 20),
+                                        capture_points = rnd.Next(1, 20),
+                                        battles = rnd.Next(1, 20),
+                                        damage_dealt = rnd.Next(1, 20),
+                                        damage_received = rnd.Next(1, 20),
+                                        shots = rnd.Next(1, 20),
+                                        frags8p = rnd.Next(1, 20),
+                                        xp = rnd.Next(1, 20),
+                                        win_and_survived = rnd.Next(1, 20),
+                                        survived_battles = rnd.Next(1, 20),
+                                        dropped_capture_points = rnd.Next(1, 20),
+                                    }
+                                },
+                                account_id = rnd.Next(1, 2000),
+                                created_at = DateTime.Now,
+                                updated_at = DateTime.Now,
+                                @private = new Private()
+                                {
+
+                                },
+                                last_battle_time = DateTime.Now,
+                                nickname = $"HINCO"
+                            }
+                        }
+                    }
+                });
+
+                var sessions = Enumerable.Range(1, 10).Select(i => new Session
+                {
+                    Id = i,
+                    Name = $"Сессия {i}",
+                    Time = DateTime.Now,
+                    Battles = new ObservableCollection<Battle>(battles)
+                });
+
+                Sessions = new ObservableCollection<Session>(sessions);
+
+                //DataService ds = new DataService();
+                //ds.SaveToJson(Sessions);
+            }
+
+
+            if (test2)
             {
-                Id = i,
-                Name = $"Сессия {i}",
-                TimeSession = DateTime.Now,
-                Battles = new ObservableCollection<Battle>(battles)
-            });
+                battles_1 = new ObservableCollection<Battle>();
+                sessions_1 = new ObservableCollection<Session>();
 
-            Sessions = new ObservableCollection<Session>(sessions);
+                battles_1.Add(new Battle
+                {
+                    Id = 1,
+                    Status = "Победа",
+                    Player = new Player
+                    {
+                        status = "ok",
+                        meta = new Meta() { count = 1 },
+                        data = new Data()
+                        {
+                            account = new Account()
+                            {
+                                statistics = new Statistics()
+                                {
+                                    all = new All()
+                                    {
+                                        spotted = rnd.Next(1, 20),
+                                        max_frags_tank_id = rnd.Next(1, 20),
+                                        hits = rnd.Next(1, 20),
+                                        frags = rnd.Next(1, 20),
+                                        max_xp = rnd.Next(1, 20),
+                                        max_xp_tank_id = rnd.Next(1, 20),
+                                        wins = rnd.Next(1, 20),
+                                        losses = rnd.Next(1, 20),
+                                        capture_points = rnd.Next(1, 20),
+                                        battles = rnd.Next(1, 20),
+                                        damage_dealt = rnd.Next(1, 20),
+                                        damage_received = rnd.Next(1, 20),
+                                        max_frags = rnd.Next(1, 20),
+                                        shots = rnd.Next(1, 20),
+                                        frags8p = rnd.Next(1, 20),
+                                        xp = rnd.Next(1, 20),
+                                        win_and_survived = rnd.Next(1, 20),
+                                        survived_battles = rnd.Next(1, 20),
+                                        dropped_capture_points = rnd.Next(1, 20),
+                                    },
+                                    clan = new Clan()
+                                    {
+                                        spotted = rnd.Next(1, 20),
+                                        max_frags_tank_id = rnd.Next(1, 20),
+                                        hits = rnd.Next(1, 20),
+                                        frags = rnd.Next(1, 20),
+                                        max_xp = rnd.Next(1, 20),
+                                        max_xp_tank_id = rnd.Next(1, 20),
+                                        wins = rnd.Next(1, 20),
+                                        losses = rnd.Next(1, 20),
+                                        capture_points = rnd.Next(1, 20),
+                                        battles = rnd.Next(1, 20),
+                                        damage_dealt = rnd.Next(1, 20),
+                                        damage_received = rnd.Next(1, 20),
+                                        max_frags = rnd.Next(1, 20),
+                                        shots = rnd.Next(1, 20),
+                                        frags8p = rnd.Next(1, 20),
+                                        xp = rnd.Next(1, 20),
+                                        win_and_survived = rnd.Next(1, 20),
+                                        survived_battles = rnd.Next(1, 20),
+                                        dropped_capture_points = rnd.Next(1, 20),
+                                    },
+                                    rating = new Rating()
+                                    {
+                                        spotted = rnd.Next(1, 20),
+                                        hits = rnd.Next(1, 20),
+                                        frags = rnd.Next(1, 20),
+                                        wins = rnd.Next(1, 20),
+                                        losses = rnd.Next(1, 20),
+                                        capture_points = rnd.Next(1, 20),
+                                        battles = rnd.Next(1, 20),
+                                        damage_dealt = rnd.Next(1, 20),
+                                        damage_received = rnd.Next(1, 20),
+                                        shots = rnd.Next(1, 20),
+                                        frags8p = rnd.Next(1, 20),
+                                        xp = rnd.Next(1, 20),
+                                        win_and_survived = rnd.Next(1, 20),
+                                        survived_battles = rnd.Next(1, 20),
+                                        dropped_capture_points = rnd.Next(1, 20),
+                                    }
+                                },
+                                account_id = rnd.Next(1, 2000),
+                                created_at = DateTime.Now,
+                                updated_at = DateTime.Now,
+                                @private = new Private()
+                                {
+
+                                },
+                                last_battle_time = DateTime.Now,
+                                nickname = $"HINCO"
+                            }
+                        }
+                    }
+                });
+
+                sessions_1.Add(new Session
+                {
+                    Id = 1,
+                    Name = "TEST",
+                    Time = DateTime.Now,
+                    Battles = new ObservableCollection<Battle>(battles_1)
+                });
+
+
+                Sessions = new ObservableCollection<Session>();
+                Battles = new ObservableCollection<Battle>();
+            }
         }
     }
 }
