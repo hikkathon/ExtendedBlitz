@@ -67,7 +67,7 @@ namespace ExtendedBlitz.ViewModels
 
         #endregion
 
-        #region Selected battle
+        #region Selected session
 
         private Session _selectSession;
         public Session SelectSession { get => _selectSession; set => Set(ref _selectSession, value); }
@@ -154,7 +154,6 @@ namespace ExtendedBlitz.ViewModels
                             else
                                 status = "Поражение";
 
-                            // Добавить бой
                             #region Добавить бой
                             dispatcher.Invoke(new Action(() =>
                             {
@@ -172,7 +171,6 @@ namespace ExtendedBlitz.ViewModels
 
                             if (isOpenSession)
                             {
-                                // добавить сессию
                                 #region Добавление сессии
                                 dispatcher.Invoke(new Action(() =>
                                 {
@@ -188,6 +186,7 @@ namespace ExtendedBlitz.ViewModels
                                     Sessions.Add(new_session);
                                 }));
                                 #endregion
+
                                 isOpenSession = false;
                             }
                             else
@@ -212,7 +211,7 @@ namespace ExtendedBlitz.ViewModels
                         }
 
                         Status = $"{isOpenSession} Constant : {constant.data.account.statistics.all.battles} Loop : {loop.data.account.statistics.all.battles}({i++})";
-                        await Task.Delay(2000);
+                        await Task.Delay(5*1000);
                     }
                 }
             }, token);
@@ -451,9 +450,13 @@ namespace ExtendedBlitz.ViewModels
                 sessions_1.Add(new Session
                 {
                     Id = 1,
-                    Name = "TEST",
+                    Name = "TEST 1",
                     Time = DateTime.Now,
-                    Battles = new ObservableCollection<Battle>(battles_1)
+                    Battles = new ObservableCollection<Battle>(battles_1),
+                    StatsSession = new StatsSession()
+                    {
+
+                    }
                 });
 
 

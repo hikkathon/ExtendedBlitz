@@ -76,22 +76,70 @@
                         <ColumnDefinition Width="250"/>
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <GroupBox Grid.Column="0" Header="Сессии">
-                        <ListBox ItemsSource="{Binding Sessions}"
+                    <Grid Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="165"/>
+                        </Grid.RowDefinitions>
+                        <GroupBox Grid.Row="0" Header="Сессия">
+                            <ListBox ItemsSource="{Binding Sessions}"
                                  SelectedItem="{Binding SelectSession}"
                                  SelectedIndex="0">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate DataType="Session">
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding Name}"/>
-                                        <TextBlock Text="{Binding Battles.Count, StringFormat = [Боев: {0}]}" Margin="3 0 0 0"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </GroupBox>
-                    <GroupBox Grid.Column="1" 
-                              Header="Бои">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate DataType="Session">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Name}"/>
+                                            <TextBlock Text="{Binding Battles.Count, StringFormat = [Боев: {0}]}" Margin="3 0 0 0"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </GroupBox>
+                        <GroupBox Grid.Row="1" Header="Статистика">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="135"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0">
+                                    <!--<TextBlock Text="{Binding SelectSession.StatsSession.test, StringFormat = Победы/Боёв: {0}}"/>-->
+                                    <TextBlock Text="Победы/Боёв:"/>
+                                    <TextBlock Text="Уничтожил:"/>
+                                    <TextBlock Text="Уничтожен:"/>
+                                    <TextBlock Text="Попаданий/Выстрелов:"/>
+                                    <TextBlock Text="Нанесенный урон:"/>
+                                    <TextBlock Text="Полученный урон:"/>
+                                    <TextBlock Text="Обнаружил:"/>
+                                    <TextBlock Text="Очки защиты базы:"/>
+                                    <TextBlock Text="Очки захвата базы:"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock Text="9 (21)"/>
+                                    <TextBlock Text="12"/>
+                                    <TextBlock Text="14"/>
+                                    <TextBlock Text="130/147"/>
+                                    <TextBlock Text="33064"/>
+                                    <TextBlock Text="28580"/>
+                                    <TextBlock Text="30"/>
+                                    <TextBlock Text="0"/>
+                                    <TextBlock Text="0"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="2">
+                                    <TextBlock Text="(42.86%)"/>
+                                    <TextBlock Text="(0.57)"/>
+                                    <TextBlock Text="(66.67%)"/>
+                                    <TextBlock Text="(88.44%)"/>
+                                    <TextBlock Text="1574"/>
+                                    <TextBlock Text="1361"/>
+                                    <TextBlock Text="1.43"/>
+                                    <TextBlock Text="0"/>
+                                    <TextBlock Text="0"/>
+                                </StackPanel>
+                            </Grid>
+                        </GroupBox>
+                    </Grid>
+                    <GroupBox Grid.Column="1" Header="Бои">
                         <DataGrid 
                             ItemsSource="{Binding SelectSession.Battles}" 
                             AutoGenerateColumns="False" 
