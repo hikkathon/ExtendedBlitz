@@ -136,7 +136,7 @@ namespace ExtendedBlitz.Models.WoTBlitz
                 statSession.Survived_battles += battle.Player.data.account.statistics.all.survived_battles;
                 statSession.Hits += battle.Player.data.account.statistics.all.hits;
                 statSession.Shots += battle.Player.data.account.statistics.all.shots;
-                statSession.Deaths += battle.Player.data.account.statistics.all.survived_battles;
+                statSession.Deaths += battle.Player.data.account.statistics.all.battles - statSession.Survived_battles;
                 statSession.Damage_dealt += battle.Player.data.account.statistics.all.damage_dealt;
                 statSession.Damage_received += battle.Player.data.account.statistics.all.damage_received;
                 statSession.Spotted += battle.Player.data.account.statistics.all.spotted;
@@ -151,7 +151,14 @@ namespace ExtendedBlitz.Models.WoTBlitz
         {
             string stat =
                 $"Побед/Боёв:\t\t{statSession.Wins} ({statSession.Battles})\t({Math.Round((float)statSession.Wins / (float)statSession.Battles * 100.0f, 2)}%)" +
-                $"Уничтожил:\t\t{statSession.Frags}\t({Math.Round((float)statSession.Frags / (float)statSession.Battles * 100.0f, 2)})";
+                $"\nУничтожил:\t\t{statSession.Frags}\t({Math.Round((float)statSession.Frags / (float)statSession.Battles, 2)})" +
+                $"\nУничтожен:\t\t{statSession.Deaths}\t({Math.Round((float)statSession.Deaths / (float)statSession.Battles * 100.0f, 2)}%)" +
+                $"\nПопаданий/Выстрелов:\t{statSession.Shots}/{statSession.Hits}\t({Math.Round((float)statSession.Hits / statSession.Shots * 100.0f, 2)}%)" +
+                $"\nНанесённый урон:\t{statSession.Damage_dealt}\t({Math.Round((float)statSession.Damage_dealt / (float)statSession.Battles, 0)})" +
+                $"\nПолученный урон:\t{statSession.Damage_received}\t({Math.Round((float)statSession.Damage_received / (float)statSession.Battles, 0)})" +
+                $"\nОбнаружил:\t\t{statSession.Spotted}\t({Math.Round((float)statSession.Spotted / (float)statSession.Battles, 2)})" +
+                $"\nОчки защиты базы:\t{statSession.Dropped_capture_points}\t({Math.Round((float)statSession.Dropped_capture_points / (float)statSession.Battles, 2)})" +
+                $"\nОчки захваты базы:\t{statSession.Capture_points}\t({Math.Round((float)statSession.Capture_points / (float)statSession.Battles, 2)})";
             return stat;
         }
     }
