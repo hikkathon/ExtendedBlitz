@@ -98,13 +98,13 @@
                         <GroupBox Grid.Row="1" Header="Статистика">
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="135"/>
                                     <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
+                                    <!--<ColumnDefinition Width="*"/>-->
+                                    <!--<ColumnDefinition Width="*"/>-->
                                 </Grid.ColumnDefinitions>
                                 <StackPanel Grid.Column="0">
                                     <!--<TextBlock Text="{Binding SelectSession.StatsSession.test, StringFormat = Победы/Боёв: {0}}"/>-->
-                                    <TextBlock Text="Победы/Боёв:"/>
+                                    <!--<TextBlock Text="Победы/Боёв:"/>
                                     <TextBlock Text="Уничтожил:"/>
                                     <TextBlock Text="Уничтожен:"/>
                                     <TextBlock Text="Попаданий/Выстрелов:"/>
@@ -112,10 +112,12 @@
                                     <TextBlock Text="Полученный урон:"/>
                                     <TextBlock Text="Обнаружил:"/>
                                     <TextBlock Text="Очки защиты базы:"/>
-                                    <TextBlock Text="Очки захвата базы:"/>
+                                    <TextBlock Text="Очки захвата базы:"/>-->
+                                    <TextBlock Text="{Binding WinBattles}"/>
                                 </StackPanel>
-                                <StackPanel Grid.Column="1">
-                                    <TextBlock Text="9 (21)"/>
+                                <!--<StackPanel Grid.Column="1">
+                                    --><!--<TextBlock Text="{Binding SelectSession.StatSession.Battles}"/>--><!--
+                                    <TextBlock Text="{Binding WinBattles}"/>
                                     <TextBlock Text="12"/>
                                     <TextBlock Text="14"/>
                                     <TextBlock Text="130/147"/>
@@ -124,8 +126,8 @@
                                     <TextBlock Text="30"/>
                                     <TextBlock Text="0"/>
                                     <TextBlock Text="0"/>
-                                </StackPanel>
-                                <StackPanel Grid.Column="2">
+                                </StackPanel>-->
+                                <!--<StackPanel Grid.Column="2">
                                     <TextBlock Text="(42.86%)"/>
                                     <TextBlock Text="(0.57)"/>
                                     <TextBlock Text="(66.67%)"/>
@@ -135,7 +137,7 @@
                                     <TextBlock Text="1.43"/>
                                     <TextBlock Text="0"/>
                                     <TextBlock Text="0"/>
-                                </StackPanel>
+                                </StackPanel>-->
                             </Grid>
                         </GroupBox>
                     </Grid>

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Text;
 using System.Linq;
 using System;
+using ExtendedBlitz.ViewModels;
 
 namespace ExtendedBlitz.Models.WoTBlitz
 {
@@ -121,6 +122,37 @@ namespace ExtendedBlitz.Models.WoTBlitz
             };
 
             return player;
+        }
+
+        internal static StatSession GetStatBattleSession(ICollection<Battle> battles)
+        {
+            var statSession = new StatSession();
+
+            foreach (var battle in battles)
+            {
+                statSession.Wins += battle.Player.data.account.statistics.all.wins;
+                statSession.Battles += battle.Player.data.account.statistics.all.battles;
+                statSession.Frags += battle.Player.data.account.statistics.all.frags;
+                statSession.Survived_battles += battle.Player.data.account.statistics.all.survived_battles;
+                statSession.Hits += battle.Player.data.account.statistics.all.hits;
+                statSession.Shots += battle.Player.data.account.statistics.all.shots;
+                statSession.Deaths += battle.Player.data.account.statistics.all.survived_battles;
+                statSession.Damage_dealt += battle.Player.data.account.statistics.all.damage_dealt;
+                statSession.Damage_received += battle.Player.data.account.statistics.all.damage_received;
+                statSession.Spotted += battle.Player.data.account.statistics.all.spotted;
+                statSession.Dropped_capture_points += battle.Player.data.account.statistics.all.dropped_capture_points;
+                statSession.Capture_points += battle.Player.data.account.statistics.all.capture_points;
+            }
+
+            return statSession;
+        }
+
+        internal static string AverageStatSession(StatSession statSession)
+        {
+            string stat =
+                $"Побед/Боёв:\t\t{statSession.Wins} ({statSession.Battles})\t({Math.Round((float)statSession.Wins / (float)statSession.Battles * 100.0f, 2)}%)" +
+                $"Уничтожил:\t\t{statSession.Frags}\t({Math.Round((float)statSession.Frags / (float)statSession.Battles * 100.0f, 2)})";
+            return stat;
         }
     }
 }

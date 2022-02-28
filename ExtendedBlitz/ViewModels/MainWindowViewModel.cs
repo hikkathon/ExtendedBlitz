@@ -74,6 +74,30 @@ namespace ExtendedBlitz.ViewModels
 
         #endregion
 
+        #region Average Stats Properties
+
+        #region Win/Battles
+        private string _winBattles = 
+            "Побед/Боёв:\t\t0 (0)\t(0.0%)" + 
+            "\nУничтожил:\t\t0\t(0.0)" +
+            "\nУничтожен:\t\t0\t(0.0%)" +
+            "\nПопаданий/Выстрелов:\t0/0\t(0.0%)" +
+            "\nНанесённый урон:\t0\t(0)" +
+            "\nПолученный урон:\t0\t(0)" +
+            "\nОбнаружил:\t\t0\t(0)" +
+            "\nОчки защиты базы:\t0\t(0)" +
+            "\nОчки захваты базы:\t0\t(0)";
+
+        /// <summary>Win/Battles</summary>
+        public string WinBattles
+        {
+            get => _winBattles;
+            set => Set(ref _winBattles, value);
+        }
+        #endregion
+
+        #endregion
+
         /* ---------------------------------------------------------------------------------------------------- */
 
         #region Команды
@@ -181,6 +205,7 @@ namespace ExtendedBlitz.ViewModels
                                         Name = $"Session {session_max_index}",
                                         Time = DateTime.Now,
                                         Battles = new ObservableCollection<Battle>(Battles),
+                                        StatSession = Calculate.GetStatBattleSession(Battles),
                                     };
 
                                     Sessions.Add(new_session);
@@ -199,19 +224,37 @@ namespace ExtendedBlitz.ViewModels
                                     Status = status,
                                     Player = Calculate.SubtractLoopOfConstant(constant, loop)
                                 };
+                                #endregion
+
+                                #region Обновить сессию
+                                var update_session = new Session
+                                {
+                                    Id = session_max_index,
+                                    Name = $"Session {session_max_index}",
+                                    Time = DateTime.Now,
+                                    Battles = new ObservableCollection<Battle>(Battles),
+                                    StatSession = Calculate.GetStatBattleSession(Battles)
+                                };
+                                #endregion
 
                                 dispatcher.Invoke(new Action(() =>
                                 {
                                     Sessions.ElementAt(session_max_index - 1).Battles.Add(new_battle);
+                                    //Sessions.ElementAt(session_max_index - 1).StatSession = Calculate.Average(Battles);
+                                    Sessions[session_max_index - 1] = update_session;
                                 }));
-                                #endregion
                             }
 
                             constant = loop;
                         }
 
                         Status = $"{isOpenSession} Constant : {constant.data.account.statistics.all.battles} Loop : {loop.data.account.statistics.all.battles}({i++})";
-                        await Task.Delay(5*1000);
+                        if (SelectSession != null)
+                        {
+                            WinBattles = Calculate.AverageStatSession(SelectSession.StatSession);
+                            //WinBattles = $"{SelectSession.StatSession.Wins} ({SelectSession.StatSession.Battles})\t({Math.Round((float)SelectSession.StatSession.Wins / (float)SelectSession.StatSession.Battles * 100.0f, 2)})%";
+                        }
+                        await Task.Delay(2*1000);
                     }
                 }
             }, token);
@@ -452,11 +495,7 @@ namespace ExtendedBlitz.ViewModels
                     Id = 1,
                     Name = "TEST 1",
                     Time = DateTime.Now,
-                    Battles = new ObservableCollection<Battle>(battles_1),
-                    StatsSession = new StatsSession()
-                    {
-
-                    }
+                    Battles = new ObservableCollection<Battle>(battles_1)
                 });
 
 
