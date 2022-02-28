@@ -99,45 +99,10 @@
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
-                                    <!--<ColumnDefinition Width="*"/>-->
-                                    <!--<ColumnDefinition Width="*"/>-->
                                 </Grid.ColumnDefinitions>
                                 <StackPanel Grid.Column="0">
-                                    <!--<TextBlock Text="{Binding SelectSession.StatsSession.test, StringFormat = Победы/Боёв: {0}}"/>-->
-                                    <!--<TextBlock Text="Победы/Боёв:"/>
-                                    <TextBlock Text="Уничтожил:"/>
-                                    <TextBlock Text="Уничтожен:"/>
-                                    <TextBlock Text="Попаданий/Выстрелов:"/>
-                                    <TextBlock Text="Нанесенный урон:"/>
-                                    <TextBlock Text="Полученный урон:"/>
-                                    <TextBlock Text="Обнаружил:"/>
-                                    <TextBlock Text="Очки защиты базы:"/>
-                                    <TextBlock Text="Очки захвата базы:"/>-->
                                     <TextBlock Text="{Binding WinBattles}"/>
                                 </StackPanel>
-                                <!--<StackPanel Grid.Column="1">
-                                    --><!--<TextBlock Text="{Binding SelectSession.StatSession.Battles}"/>--><!--
-                                    <TextBlock Text="{Binding WinBattles}"/>
-                                    <TextBlock Text="12"/>
-                                    <TextBlock Text="14"/>
-                                    <TextBlock Text="130/147"/>
-                                    <TextBlock Text="33064"/>
-                                    <TextBlock Text="28580"/>
-                                    <TextBlock Text="30"/>
-                                    <TextBlock Text="0"/>
-                                    <TextBlock Text="0"/>
-                                </StackPanel>-->
-                                <!--<StackPanel Grid.Column="2">
-                                    <TextBlock Text="(42.86%)"/>
-                                    <TextBlock Text="(0.57)"/>
-                                    <TextBlock Text="(66.67%)"/>
-                                    <TextBlock Text="(88.44%)"/>
-                                    <TextBlock Text="1574"/>
-                                    <TextBlock Text="1361"/>
-                                    <TextBlock Text="1.43"/>
-                                    <TextBlock Text="0"/>
-                                    <TextBlock Text="0"/>
-                                </StackPanel>-->
                             </Grid>
                         </GroupBox>
                     </Grid>
@@ -168,26 +133,6 @@
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
-                                <!--<DataGridTextColumn Header="Статус" Binding="{Binding Status}" Width="*"/>
-                                <DataGridTextColumn Header="Обнаружил" Binding="{Binding Player.data.account.statistics.all.spotted}"/>
-                                <DataGridTextColumn Header="Танк(Макс фраг)" Binding="{Binding max_xp_tank_id}"/>
-                                <DataGridTextColumn Header="Попаданий" Binding="{Binding hits}"/>
-                                <DataGridTextColumn Header="Количество уничтоженной техники" Binding="{Binding frags}"/>
-                                <DataGridTextColumn Header="Максимальный опыт за бой" Binding="{Binding max_xp}"/>
-                                <DataGridTextColumn Header="Техника, на которой получен максимальный опыт за бой" Binding="{Binding max_frags_tank_id}"/>
-                                <DataGridTextColumn Header="Количество побед" Binding="{Binding wins}"/>
-                                <DataGridTextColumn Header="Количество поражений" Binding="{Binding losses}"/>
-                                <DataGridTextColumn Header="Очки защиты базы" Binding="{Binding capture_points}"/>
-                                <DataGridTextColumn Header="Количество боёв" Binding="{Binding battles}"/>
-                                <DataGridTextColumn Header="Нанесённый урон" Binding="{Binding damage_dealt}"/>
-                                <DataGridTextColumn Header="Полученный урон" Binding="{Binding damage_received}"/>
-                                <DataGridTextColumn Header="Максимум уничтожено за бой" Binding="{Binding max_frags}"/>
-                                <DataGridTextColumn Header="Произведено выстрелов" Binding="{Binding shots}"/>
-                                <DataGridTextColumn Header="Количество уничтоженной техники (уровень >=8)" Binding="{Binding frags8p}"/>
-                                <DataGridTextColumn Header="Суммарный опыт" Binding="{Binding xp}"/>
-                                <DataGridTextColumn Header="Выжил в боях и победил" Binding="{Binding win_and_survived}"/>
-                                <DataGridTextColumn Header="Выжил в боях" Binding="{Binding survived_battles}"/>
-                                <DataGridTextColumn Header="Очки защиты базы" Binding="{Binding dropped_capture_points}"/>-->
                             </DataGrid.Columns>
                             <DataGrid.RowDetailsTemplate>
                                 <DataTemplate>
