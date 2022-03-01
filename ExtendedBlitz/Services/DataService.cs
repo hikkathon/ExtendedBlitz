@@ -1,5 +1,4 @@
 ﻿using ExtendedBlitz.Models.WoTBlitz.Personal_data;
-using ExtendedBlitz.Models.WoTBlitz;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Net.Http;

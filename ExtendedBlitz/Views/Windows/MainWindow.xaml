@@ -95,13 +95,13 @@
                                 </ListBox.ItemTemplate>
                             </ListBox>
                         </GroupBox>
-                        <GroupBox Grid.Row="1" Header="Статистика">
+                        <GroupBox Grid.Row="1" Header="Статистика за сессию">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <StackPanel Grid.Column="0">
-                                    <TextBlock Text="{Binding WinBattles}"/>
+                                    <TextBlock Text="{Binding AverageStatsSession}"/>
                                 </StackPanel>
                             </Grid>
                         </GroupBox>

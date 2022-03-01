@@ -136,7 +136,7 @@ namespace ExtendedBlitz.Models.WoTBlitz
                 statSession.Survived_battles += battle.Player.data.account.statistics.all.survived_battles;
                 statSession.Hits += battle.Player.data.account.statistics.all.hits;
                 statSession.Shots += battle.Player.data.account.statistics.all.shots;
-                statSession.Deaths += battle.Player.data.account.statistics.all.battles - statSession.Survived_battles;
+                statSession.Deaths += battle.Player.data.account.statistics.all.battles - battle.Player.data.account.statistics.all.survived_battles;
                 statSession.Damage_dealt += battle.Player.data.account.statistics.all.damage_dealt;
                 statSession.Damage_received += battle.Player.data.account.statistics.all.damage_received;
                 statSession.Spotted += battle.Player.data.account.statistics.all.spotted;

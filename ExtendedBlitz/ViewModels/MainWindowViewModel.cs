@@ -13,7 +13,9 @@ using System.Threading;
 using System.Net.Http;
 using System.Windows;
 using System.Linq;
+using System.IO;
 using System;
+using Newtonsoft.Json;
 
 namespace ExtendedBlitz.ViewModels
 {
@@ -27,6 +29,7 @@ namespace ExtendedBlitz.ViewModels
         ICollection<Battle> battles_1;
         ICollection<Session> sessions_1;
         Dispatcher dispatcher;
+        DataService dataService;
 
         #region Заголовок окна
 
@@ -76,8 +79,8 @@ namespace ExtendedBlitz.ViewModels
 
         #region Average Stats Properties
 
-        #region Win/Battles
-        private string _winBattles = 
+        #region Средние прказатели за сессию
+        private string _averageStatsSession = 
             "Побед/Боёв:\t\t0 (0)\t(0.0%)" + 
             "\nУничтожил:\t\t0\t(0.0)" +
             "\nУничтожен:\t\t0\t(0.0%)" +
@@ -89,10 +92,10 @@ namespace ExtendedBlitz.ViewModels
             "\nОчки захваты базы:\t0\t(0)";
 
         /// <summary>Win/Battles</summary>
-        public string WinBattles
+        public string AverageStatsSession
         {
-            get => _winBattles;
-            set => Set(ref _winBattles, value);
+            get => _averageStatsSession;
+            set => Set(ref _averageStatsSession, value);
         }
         #endregion
 
@@ -130,6 +133,7 @@ namespace ExtendedBlitz.ViewModels
         private bool CanMaximizedWindowCommandExecuted(object p) => true;
         private void OnMaximizedWindowCommandExecuted(object p)
         {
+            dataService.SaveToJson(Sessions);
             CurWindowState = WindowState.Maximized;
         }
 
@@ -202,7 +206,7 @@ namespace ExtendedBlitz.ViewModels
                                     var new_session = new Session
                                     {
                                         Id = session_max_index,
-                                        Name = $"Session {session_max_index}",
+                                        Name = $"Сессия ({session_max_index})",
                                         Time = DateTime.Now,
                                         Battles = new ObservableCollection<Battle>(Battles),
                                         StatSession = Calculate.GetStatBattleSession(Battles),
@@ -230,7 +234,7 @@ namespace ExtendedBlitz.ViewModels
                                 var update_session = new Session
                                 {
                                     Id = session_max_index,
-                                    Name = $"Session {session_max_index}",
+                                    Name = $"Сессия ({session_max_index})",
                                     Time = DateTime.Now,
                                     Battles = new ObservableCollection<Battle>(Battles),
                                     StatSession = Calculate.GetStatBattleSession(Battles)
@@ -240,7 +244,6 @@ namespace ExtendedBlitz.ViewModels
                                 dispatcher.Invoke(new Action(() =>
                                 {
                                     Sessions.ElementAt(session_max_index - 1).Battles.Add(new_battle);
-                                    //Sessions.ElementAt(session_max_index - 1).StatSession = Calculate.Average(Battles);
                                     Sessions[session_max_index - 1] = update_session;
                                 }));
                             }
@@ -249,11 +252,10 @@ namespace ExtendedBlitz.ViewModels
                         }
 
                         Status = $"{isOpenSession} Constant : {constant.data.account.statistics.all.battles} Loop : {loop.data.account.statistics.all.battles}({i++})";
+                        
                         if (SelectSession != null)
-                        {
-                            WinBattles = Calculate.AverageStatSession(SelectSession.StatSession);
-                            //WinBattles = $"{SelectSession.StatSession.Wins} ({SelectSession.StatSession.Battles})\t({Math.Round((float)SelectSession.StatSession.Wins / (float)SelectSession.StatSession.Battles * 100.0f, 2)})%";
-                        }
+                            AverageStatsSession = Calculate.AverageStatSession(SelectSession.StatSession);
+
                         await Task.Delay(2*1000);
                     }
                 }
@@ -270,6 +272,7 @@ namespace ExtendedBlitz.ViewModels
         public MainWindowViewModel()
         {
             dispatcher = Dispatcher.CurrentDispatcher;
+            dataService = new DataService();
 
             #region Команды
 
@@ -495,11 +498,15 @@ namespace ExtendedBlitz.ViewModels
                     Id = 1,
                     Name = "TEST 1",
                     Time = DateTime.Now,
-                    Battles = new ObservableCollection<Battle>(battles_1)
+                    Battles = new ObservableCollection<Battle>(battles_1),
+                    StatSession = Calculate.GetStatBattleSession(battles_1)
                 });
 
 
-                Sessions = new ObservableCollection<Session>();
+                var fileLocalSessionJson = File.Exists("Data\\Sessions.json") ? JsonConvert.DeserializeObject<ICollection<Session>>(File.ReadAllText("Data\\Sessions.json")) : new ObservableCollection<Session>();
+
+
+                Sessions = new ObservableCollection<Session>(fileLocalSessionJson);
                 Battles = new ObservableCollection<Battle>();
             }
         }
