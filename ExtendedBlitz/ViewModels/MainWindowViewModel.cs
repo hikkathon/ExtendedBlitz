@@ -111,6 +111,7 @@ namespace ExtendedBlitz.ViewModels
         private bool CanCloseApplicationCommandExecuted(object p) => true;
         private void OnCloseApplicationCommandExecuted(object p)
         {
+            dataService.SaveToJson(Sessions);
             Application.Current.Shutdown();
         }
 
@@ -133,7 +134,6 @@ namespace ExtendedBlitz.ViewModels
         private bool CanMaximizedWindowCommandExecuted(object p) => true;
         private void OnMaximizedWindowCommandExecuted(object p)
         {
-            dataService.SaveToJson(Sessions);
             CurWindowState = WindowState.Maximized;
         }
 
@@ -207,7 +207,7 @@ namespace ExtendedBlitz.ViewModels
                                     {
                                         Id = session_max_index,
                                         Name = $"Сессия ({session_max_index})",
-                                        Time = DateTime.Now,
+                                        Time = DateTimeHelper.ToUnixTimestamp(DateTime.Now),
                                         Battles = new ObservableCollection<Battle>(Battles),
                                         StatSession = Calculate.GetStatBattleSession(Battles),
                                     };
@@ -235,7 +235,7 @@ namespace ExtendedBlitz.ViewModels
                                 {
                                     Id = session_max_index,
                                     Name = $"Сессия ({session_max_index})",
-                                    Time = DateTime.Now,
+                                    Time = DateTimeHelper.ToUnixTimestamp(DateTime.Now),
                                     Battles = new ObservableCollection<Battle>(Battles),
                                     StatSession = Calculate.GetStatBattleSession(Battles)
                                 };
@@ -386,7 +386,7 @@ namespace ExtendedBlitz.ViewModels
                 {
                     Id = i,
                     Name = $"Сессия {i}",
-                    Time = DateTime.Now,
+                    Time = DateTimeHelper.ToUnixTimestamp(DateTime.Now),
                     Battles = new ObservableCollection<Battle>(battles)
                 });
 
@@ -497,7 +497,7 @@ namespace ExtendedBlitz.ViewModels
                 {
                     Id = 1,
                     Name = "TEST 1",
-                    Time = DateTime.Now,
+                    Time = DateTimeHelper.ToUnixTimestamp(DateTime.Now),
                     Battles = new ObservableCollection<Battle>(battles_1),
                     StatSession = Calculate.GetStatBattleSession(battles_1)
                 });

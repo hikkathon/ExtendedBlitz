@@ -153,7 +153,7 @@ namespace ExtendedBlitz.Models.WoTBlitz
                 $"Побед/Боёв:\t\t{statSession.Wins} ({statSession.Battles})\t({Math.Round((float)statSession.Wins / (float)statSession.Battles * 100.0f, 2)}%)" +
                 $"\nУничтожил:\t\t{statSession.Frags}\t({Math.Round((float)statSession.Frags / (float)statSession.Battles, 2)})" +
                 $"\nУничтожен:\t\t{statSession.Deaths}\t({Math.Round((float)statSession.Deaths / (float)statSession.Battles * 100.0f, 2)}%)" +
-                $"\nПопаданий/Выстрелов:\t{statSession.Shots}/{statSession.Hits}\t({Math.Round((float)statSession.Hits / statSession.Shots * 100.0f, 2)}%)" +
+                $"\nВыстрелов/Попаданий:\t{statSession.Shots}/{statSession.Hits}\t({Math.Round((float)statSession.Hits / statSession.Shots * 100.0f, 2)}%)" +
                 $"\nНанесённый урон:\t{statSession.Damage_dealt}\t({Math.Round((float)statSession.Damage_dealt / (float)statSession.Battles, 0)})" +
                 $"\nПолученный урон:\t{statSession.Damage_received}\t({Math.Round((float)statSession.Damage_received / (float)statSession.Battles, 0)})" +
                 $"\nОбнаружил:\t\t{statSession.Spotted}\t({Math.Round((float)statSession.Spotted / (float)statSession.Battles, 2)})" +

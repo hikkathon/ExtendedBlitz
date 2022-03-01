@@ -129,8 +129,18 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Assets\Fonts\" />
     <Folder Include="Data\" />
     <Folder Include="Models\Abstract\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Images\mican.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Images\tank_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Images\icon_helmet.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

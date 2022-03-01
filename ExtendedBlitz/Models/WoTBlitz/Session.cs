@@ -15,7 +15,7 @@ namespace ExtendedBlitz.Models.WoTBlitz
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public DateTime Time { get; set; }
+        public long Time { get; set; }
         public ICollection<Battle> Battles { get; set; }
         public StatSession StatSession { get; set; }
     }
