@@ -19,7 +19,7 @@
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="10"/>
     </WindowChrome.WindowChrome>
-    <Border Background="#7160E8">
+    <Border x:Name="_border_" Style="{StaticResource _border}">
         <DockPanel Margin="2 2 2 2" Background="White">
             <Grid DockPanel.Dock="Top" ShowGridLines="True">
                 <Grid.ColumnDefinitions>
@@ -30,13 +30,7 @@
                     <Image Source="/Assets/Images/icon_helmet.png" Margin="5 2 0 2" Width="32" Height="32"/>
                     <Label Content="Blitz Extend" Margin="0 0 0 0" FontWeight="Bold" FontSize="18"/>
                     <Menu Margin="5 5 0 5" Background="White" Height="18">
-                        <MenuItem Header="Файл"/>
                         <MenuItem Header="Помощь">
-                            <MenuItem Header="О Программе"/>
-                            <MenuItem Header="Свернуть" Command="{Binding MinimizedWindowCommand}"/>
-                            <MenuItem Header="Развернуть" Command="{Binding MaximizedWindowCommand}"/>
-                            <MenuItem Header="Свернуть окно" Command="{Binding NormalWindowCommand}"/>
-                            <Separator/>
                             <MenuItem Header="ВКонтакте">
                                 <MenuItem.Icon>
                                     <fa5:ImageAwesome Icon="Brands_Vk"/>
@@ -52,135 +46,178 @@
                                     <fa5:ImageAwesome Icon="Brands_Youtube"/>
                                 </MenuItem.Icon>
                             </MenuItem>
+                            <MenuItem Header="Discord">
+                                <MenuItem.Icon>
+                                    <fa5:ImageAwesome Icon="Brands_Discord"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Header="Telegram">
+                                <MenuItem.Icon>
+                                    <fa5:ImageAwesome Icon="Brands_Telegram"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
                         </MenuItem>
                     </Menu>
                 </StackPanel>
                 <StackPanel Grid.Column="1" Margin="2.5, 2.5, 2.5, 2.5" Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Width="20" Height="20" Margin="5 0 5 0" Command="{Binding MinimizedWindowCommand}">
-                        <fa5:ImageAwesome Icon="Regular_WindowMinimize" Width="15"/>
+                    <Button Content="—" Width="22" Height="22" Margin="5 0 5 0" Style="{StaticResource MinimizedButton}" Command="{Binding MinimizedWindowCommand}">
+                        <Button.ToolTip>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="Свернуть"/>
+                            </StackPanel>
+                        </Button.ToolTip>
                     </Button>
-                    <Button Width="20" Height="20" Margin="0 0 5 0" Command="{Binding MaximizedWindowCommand}">
-                        <fa5:ImageAwesome Icon="Regular_WindowMaximize" Width="15"/>
+                    <Button Content="] [" Width="22" Height="22" Margin="0 0 5 0" Style="{StaticResource RestoredButton}" Command="{Binding NormalWindowCommand}">
+                        <Button.ToolTip>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="Свернуть в окно"/>
+                            </StackPanel>
+                        </Button.ToolTip>
                     </Button>
-                    <Button Width="20" Height="20" Margin="0 0 5 0" Command="{Binding CloseApplicationCommand}">
-                        <fa5:ImageAwesome Icon="Regular_WindowClose" Width="15"/>
+                    <Button Content="[ ]" Width="22" Height="22" Margin="0 0 5 0" Style="{StaticResource MaximizedButton}" Command="{Binding MaximizedWindowCommand}">
+                        <Button.ToolTip>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="Развернуть"/>
+                            </StackPanel>
+                        </Button.ToolTip>
+                    </Button>
+                    <Button Content="X" Width="22" Height="22" Margin="0 0 5 0" Style="{StaticResource ClosedButton}" Command="{Binding CloseApplicationCommand}">
+                        <Button.ToolTip>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="Закрыть"/>
+                            </StackPanel>
+                        </Button.ToolTip>
                     </Button>
                 </StackPanel>
             </Grid>
-            <StatusBar DockPanel.Dock="Bottom" Background="White" Margin="5 0 5 0">
+            <StatusBar x:Name="_statusBar_" Style="{StaticResource _statusBar}" DockPanel.Dock="Bottom">
                 <StatusBarItem>
-                    <StackPanel Orientation="Horizontal">
-                        <fa5:ImageAwesome Icon="Regular_User" Height="13" Margin="0 0 5 0"/>
-                        <TextBlock Text="HINCO"/>
-                        <!--<TextBlock Text="{Binding Status}"/>-->
+                    <StackPanel Orientation="Horizontal" Margin="3 0 0 0">
+                        <fa5:SvgAwesome Icon="Regular_User" Foreground="White" Height="13" Margin="0 0 5 0"/>
+                        <TextBlock Foreground="White" Text="HINCO "/>
+                        <TextBlock Foreground="White" Text="{Binding Status}"/>
                     </StackPanel>
                 </StatusBarItem>
             </StatusBar>
-            <TabControl Margin="5 5 5 5">
-                <TabItem Header="Послебоевая статистика">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="250"/>
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <Grid Grid.Column="0">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="165"/>
-                            </Grid.RowDefinitions>
-                            <GroupBox Grid.Row="0" Header="Сессия">
-                                <ListBox ItemsSource="{Binding Sessions}"
-                                 SelectedItem="{Binding SelectSession}"
-                                 SelectedIndex="0">
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate DataType="Session">
-                                            <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="{Binding Name}"/>
-                                                <TextBlock Text="{Binding Battles.Count, StringFormat = [Боев: {0}]}" Margin="3 0 0 0"/>
+            <TabControl>
+                <TabItem Header="Расширения">
+                    <TabControl>
+                        <TabItem Header="Послебоевая статистика">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="250"/>
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Grid Grid.Column="0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="165"/>
+                                    </Grid.RowDefinitions>
+                                    <GroupBox Grid.Row="0" Header="Сессия">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="32"/>
+                                            </Grid.RowDefinitions>
+                                            <ListBox Grid.Row="0" ItemsSource="{Binding Sessions}" SelectedItem="{Binding SelectSession}" SelectedIndex="0">
+                                                <ListBox.ItemTemplate>
+                                                    <DataTemplate DataType="Session">
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <TextBlock Text="{Binding Name}"/>
+                                                            <TextBlock Text="{Binding Battles.Count, StringFormat = [Боев: {0}]}" Margin="3 0 0 0"/>
+                                                        </StackPanel>
+                                                    </DataTemplate>
+                                                </ListBox.ItemTemplate>
+                                            </ListBox>
+                                            <Button Grid.Row="1" Content="Завершить сессию" Margin="2 2 2 2" Style="{StaticResource CloseSessionButton}" Command="{Binding CloseSessionCommand}"/>
+                                            <Button Grid.Row="1" Content="Начать сессию" Margin="2 2 2 2" Style="{StaticResource StartSessionButton}" Command="{Binding StartSessionCommand}"/>
+                                        </Grid>
+                                    </GroupBox>
+                                    <GroupBox Grid.Row="1" Header="Статистика за сессию">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Grid.Column="0">
+                                                <TextBlock Text="{Binding AverageStatsSession}"/>
                                             </StackPanel>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                </ListBox>
-                            </GroupBox>
-                            <GroupBox Grid.Row="1" Header="Статистика за сессию">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <StackPanel Grid.Column="0">
-                                        <TextBlock Text="{Binding AverageStatsSession}"/>
-                                    </StackPanel>
+                                        </Grid>
+                                    </GroupBox>
                                 </Grid>
-                            </GroupBox>
-                        </Grid>
-                        <GroupBox Grid.Column="1" Header="Бои">
-                            <DataGrid 
+                                <GroupBox Grid.Column="1" Header="Бои">
+                                    <DataGrid
                             ItemsSource="{Binding SelectSession.Battles}" 
                             AutoGenerateColumns="False" 
                             IsReadOnly="True"
                             GridLinesVisibility="Vertical"
                             VerticalGridLinesBrush="DarkGray"
                             AlternatingRowBackground="WhiteSmoke">
-                                <DataGrid.Columns>
-                                    <DataGridTemplateColumn Header="Статус" Width="*">
-                                        <DataGridTemplateColumn.CellTemplate>
+                                        <DataGrid.Columns>
+                                            <DataGridTemplateColumn Header="Статус" Width="*">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <WrapPanel>
+                                                            <Ellipse Name="myEllipse" Height="7" Width="7" Margin="5 0"/>
+                                                            <TextBlock Text="{Binding Status}"/>
+                                                        </WrapPanel>
+                                                        <DataTemplate.Triggers>
+                                                            <DataTrigger Binding="{Binding Status}" Value="Победа">
+                                                                <Setter TargetName="myEllipse" Property="Fill" Value="Green"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Status}" Value="Поражение">
+                                                                <Setter TargetName="myEllipse" Property="Fill" Value="Red"/>
+                                                            </DataTrigger>
+                                                        </DataTemplate.Triggers>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+                                        </DataGrid.Columns>
+                                        <DataGrid.RowDetailsTemplate>
                                             <DataTemplate>
-                                                <WrapPanel>
-                                                    <Ellipse Name="myEllipse" Height="7" Width="7" Margin="5 0"/>
-                                                    <TextBlock Text="{Binding Status}"/>
-                                                </WrapPanel>
-                                                <DataTemplate.Triggers>
-                                                    <DataTrigger Binding="{Binding Status}" Value="Победа">
-                                                        <Setter TargetName="myEllipse" Property="Fill" Value="Green"/>
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding Status}" Value="Поражение">
-                                                        <Setter TargetName="myEllipse" Property="Fill" Value="Red"/>
-                                                    </DataTrigger>
-                                                </DataTemplate.Triggers>
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn>
-                                </DataGrid.Columns>
-                                <DataGrid.RowDetailsTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Margin="15 0">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition/>
-                                                    <ColumnDefinition/>
-                                                    <ColumnDefinition/>
-                                                </Grid.ColumnDefinitions>
-                                                <StackPanel Grid.Column="0">
-                                                    <TextBlock Text="{Binding Player.data.account.statistics.all.spotted, StringFormat = Обнаружил: {0}}"/>
-                                                    <!--<TextBlock Text="{Binding Player.data.account.statistics.all.max_frags_tank_id, StringFormat = max_frags_tank_id: {0}}"/>-->
-                                                    <TextBlock Text="{Binding Player.data.account.statistics.all.hits, StringFormat = Попаданий: {0}}"/>
-                                                    <TextBlock Text="{Binding Player.data.account.statistics.all.frags, StringFormat = Уничтожил: {0}}"/>
-                                                    <!--<TextBlock Text="{Binding Player.data.account.statistics.all.max_xp, StringFormat = max_xp: {0}}"/>-->
-                                                    <!--<TextBlock Text="{Binding Player.data.account.statistics.all.max_xp_tank_id, StringFormat = max_xp_tank_id: {0}}"/>-->
-                                                    <!--<TextBlock Text="{Binding Player.data.account.statistics.all.wins, StringFormat = wins: {0}}"/>-->
-                                                    <!--<TextBlock Text="{Binding Player.data.account.statistics.all.losses, StringFormat = losses: {0}}"/>-->
-                                                    <TextBlock Text="{Binding Player.data.account.statistics.all.capture_points, StringFormat = Очки захвата базы: {0}}"/>
-                                                    <!--<TextBlock Text="{Binding Player.data.account.statistics.all.battles, StringFormat = battles: {0}}"/>-->
-                                                    <TextBlock Text="{Binding Player.data.account.statistics.all.damage_dealt, StringFormat = Нанесённый урон: {0}}"/>
-                                                    <TextBlock Text="{Binding Player.data.account.statistics.all.damage_received, StringFormat = Полученный урон: {0}}"/>
-                                                    <!--<TextBlock Text="{Binding Player.data.account.statistics.all.max_frags, StringFormat = max_frags: {0}}"/>-->
-                                                    <TextBlock Text="{Binding Player.data.account.statistics.all.shots, StringFormat = Выстрелов: {0}}"/>
-                                                    <!--<TextBlock Text="{Binding Player.data.account.statistics.all.frags8p, StringFormat = frags8p: {0}}"/>-->
-                                                    <TextBlock Text="{Binding Player.data.account.statistics.all.xp, StringFormat = Опыт за бой: {0}}"/>
-                                                    <!--<TextBlock Text="{Binding Player.data.account.statistics.all.win_and_survived, StringFormat = win_and_survived: {0}}"/>-->
-                                                    <!--<TextBlock Text="{Binding Player.data.account.statistics.all.survived_battles, StringFormat = survived_battles: {0}}"/>-->
-                                                    <TextBlock Text="{Binding Player.data.account.statistics.all.dropped_capture_points, StringFormat = Очки защиты базы: {0}}"/>
+                                                <StackPanel Margin="15 0">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <StackPanel Grid.Column="0">
+                                                            <TextBlock Text="{Binding Player.data.account.statistics.all.spotted, StringFormat = Обнаружил: {0}}"/>
+                                                            <!--<TextBlock Text="{Binding Player.data.account.statistics.all.max_frags_tank_id, StringFormat = max_frags_tank_id: {0}}"/>-->
+                                                            <TextBlock Text="{Binding Player.data.account.statistics.all.hits, StringFormat = Попаданий: {0}}"/>
+                                                            <TextBlock Text="{Binding Player.data.account.statistics.all.frags, StringFormat = Уничтожил: {0}}"/>
+                                                            <!--<TextBlock Text="{Binding Player.data.account.statistics.all.max_xp, StringFormat = max_xp: {0}}"/>-->
+                                                            <!--<TextBlock Text="{Binding Player.data.account.statistics.all.max_xp_tank_id, StringFormat = max_xp_tank_id: {0}}"/>-->
+                                                            <!--<TextBlock Text="{Binding Player.data.account.statistics.all.wins, StringFormat = wins: {0}}"/>-->
+                                                            <!--<TextBlock Text="{Binding Player.data.account.statistics.all.losses, StringFormat = losses: {0}}"/>-->
+                                                            <!--<TextBlock Text="{Binding Player.data.account.statistics.all.battles, StringFormat = battles: {0}}"/>-->
+                                                            <TextBlock Text="{Binding Player.data.account.statistics.all.damage_dealt, StringFormat = Нанесённый урон: {0}}"/>
+                                                            <TextBlock Text="{Binding Player.data.account.statistics.all.damage_received, StringFormat = Полученный урон: {0}}"/>
+                                                            <!--<TextBlock Text="{Binding Player.data.account.statistics.all.max_frags, StringFormat = max_frags: {0}}"/>-->
+                                                            <TextBlock Text="{Binding Player.data.account.statistics.all.shots, StringFormat = Выстрелов: {0}}"/>
+                                                            <!--<TextBlock Text="{Binding Player.data.account.statistics.all.frags8p, StringFormat = frags8p: {0}}"/>-->
+                                                            <TextBlock Text="{Binding Player.data.account.statistics.all.xp, StringFormat = Опыт за бой: {0}}"/>
+                                                            <!--<TextBlock Text="{Binding Player.data.account.statistics.all.win_and_survived, StringFormat = win_and_survived: {0}}"/>-->
+                                                            <!--<TextBlock Text="{Binding Player.data.account.statistics.all.survived_battles, StringFormat = survived_battles: {0}}"/>-->
+                                                            <TextBlock Text="{Binding Player.data.account.statistics.all.capture_points, StringFormat = Очки захвата базы: {0}}"/>
+                                                            <TextBlock Text="{Binding Player.data.account.statistics.all.dropped_capture_points, StringFormat = Очки защиты базы: {0}}"/>
+                                                        </StackPanel>
+                                                    </Grid>
                                                 </StackPanel>
-                                            </Grid>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </DataGrid.RowDetailsTemplate>
-                            </DataGrid>
-                        </GroupBox>
-                    </Grid>
+                                            </DataTemplate>
+                                        </DataGrid.RowDetailsTemplate>
+                                    </DataGrid>
+                                </GroupBox>
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="Дамаг панель" IsEnabled="False"></TabItem>
+                        <TabItem Header="Оленемер" IsEnabled="False"></TabItem>
+                    </TabControl>
                 </TabItem>
-                <TabItem Header="Дамаг панель" IsEnabled="False"></TabItem>
-                <TabItem Header="Оленемер" IsEnabled="False"></TabItem>
+                <TabItem Header="Накладные элементы" IsEnabled="False">
+
+                </TabItem>
+                <TabItem Header="Настройки" IsEnabled="False">
+                    
+                </TabItem>
             </TabControl>
         </DockPanel>
     </Border>

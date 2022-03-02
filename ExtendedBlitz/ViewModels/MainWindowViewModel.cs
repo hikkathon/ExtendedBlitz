@@ -46,7 +46,7 @@ namespace ExtendedBlitz.ViewModels
 
         #region Status : string - Статус программы
 
-        private string _status = "Undefined";
+        private string _status;
 
         /// <summary>Статус программы</summary>
         public string Status
@@ -101,6 +101,32 @@ namespace ExtendedBlitz.ViewModels
 
         #endregion
 
+        #region IsOpenSession : bool - Флаг
+
+        private bool _isOpenSession;
+
+        /// <summary>Флаг показывает открыта сессия или нет</summary>
+        public bool IsOpenSession
+        {
+            get => _isOpenSession;
+            set => Set(ref _isOpenSession, value);
+        }
+
+        #endregion
+
+        #region Token : Токен для отмены процесса
+
+        private CancellationTokenSource _cts;
+
+        /// <summary>Токен для отмены скана статистики</summary>
+        public CancellationTokenSource CTS
+        {
+            get => _cts;
+            set => Set(ref _cts, value);
+        }
+
+        #endregion
+
         /* ---------------------------------------------------------------------------------------------------- */
 
         #region Команды
@@ -146,21 +172,32 @@ namespace ExtendedBlitz.ViewModels
         private void OnNormalWindowCommandExecuted(object p)
         {
             CurWindowState = WindowState.Normal;
+        }
 
+        #endregion
+
+        #region StartSessionCommand
+
+        public ICommand StartSessionCommand { get; }
+        private bool CanStartSessionCommandExecuted(object p) => !IsOpenSession;
+        private void OnStartSessionCommandExecuted(object p)
+        {
             Status = "Стартую!";
 
+            CTS = new CancellationTokenSource();
+            var token = CTS.Token;
 
-            var tcs = new CancellationTokenSource();
-            var token = tcs.Token;
             Player loop = new Player();
             Player constant = new Player();
+
+            IsOpenSession = true;
+            bool IsNewSession = true;
+
             Task task = new Task(async () =>
             {
                 string application_id = "07ac358d831595916aca265c2f14750c";
                 string account_id = "71941826";
                 string region = "ru";
-
-                bool isOpenSession = true;
 
                 int i = 0;
                 int battle_max_index = 0;
@@ -170,7 +207,7 @@ namespace ExtendedBlitz.ViewModels
                 {
                     var data_service = new DataService(client, application_id, account_id, region);
                     constant = data_service.GetData();
-                    while (!token.IsCancellationRequested)
+                    while (IsOpenSession)
                     {
                         loop = data_service.GetData();
                         if (loop.data.account.statistics.all.battles > constant.data.account.statistics.all.battles)
@@ -197,7 +234,7 @@ namespace ExtendedBlitz.ViewModels
                             }));
                             #endregion
 
-                            if (isOpenSession)
+                            if (IsNewSession)
                             {
                                 #region Добавление сессии
                                 dispatcher.Invoke(new Action(() =>
@@ -216,7 +253,7 @@ namespace ExtendedBlitz.ViewModels
                                 }));
                                 #endregion
 
-                                isOpenSession = false;
+                                IsNewSession = false;
                             }
                             else
                             {
@@ -251,16 +288,31 @@ namespace ExtendedBlitz.ViewModels
                             constant = loop;
                         }
 
-                        Status = $"{isOpenSession} Constant : {constant.data.account.statistics.all.battles} Loop : {loop.data.account.statistics.all.battles}({i++})";
-                        
+                        Status = $"({i++})";
+
                         if (SelectSession != null)
                             AverageStatsSession = Calculate.AverageStatSession(SelectSession.StatSession);
 
-                        await Task.Delay(2*1000);
+                        await Task.Delay(2 * 1000);
                     }
                 }
             }, token);
             task.Start();
+        }
+
+        #endregion
+
+        #region CloseSessionCommand
+
+        public ICommand CloseSessionCommand { get; }
+        private bool CanCloseSessionCommandExecuted(object p) => IsOpenSession;
+        private void OnCloseSessionCommandExecuted(object p)
+        {
+            Status = "Сессия прервана!";
+            dataService.SaveToJson(Sessions);
+            Battles.Clear();
+            IsOpenSession = false;
+            CTS.Cancel();
         }
 
         #endregion
@@ -280,6 +332,8 @@ namespace ExtendedBlitz.ViewModels
             MinimizedWindowCommand  = new RelayCommand(OnMinimizedWindowCommandExecuted, CanMinimizedWindowCommandExecuted);
             MaximizedWindowCommand  = new RelayCommand(OnMaximizedWindowCommandExecuted, CanMaximizedWindowCommandExecuted);
             NormalWindowCommand     = new RelayCommand(OnNormalWindowCommandExecuted, CanNormalWindowCommandExecuted);
+            StartSessionCommand     = new RelayCommand(OnStartSessionCommandExecuted, CanStartSessionCommandExecuted);
+            CloseSessionCommand     = new RelayCommand(OnCloseSessionCommandExecuted, CanCloseSessionCommandExecuted);
 
             #endregion
 
