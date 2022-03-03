@@ -44,7 +44,7 @@ namespace ExtendedBlitz.Services
 
         public void SaveToJson(ICollection session)
         {
-            File.WriteAllText($"Data\\Sessions.json", JsonConvert.SerializeObject(session));
+            File.WriteAllText($"Data\\Save\\Sessions.json", JsonConvert.SerializeObject(session));
         }
     }
 }

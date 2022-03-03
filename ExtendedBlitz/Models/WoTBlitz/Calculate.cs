@@ -143,6 +143,7 @@ namespace ExtendedBlitz.Models.WoTBlitz
                 statSession.Dropped_capture_points += battle.Player.data.account.statistics.all.dropped_capture_points;
                 statSession.Capture_points += battle.Player.data.account.statistics.all.capture_points;
             }
+            statSession.Average = AverageStatSession(statSession);
 
             return statSession;
         }

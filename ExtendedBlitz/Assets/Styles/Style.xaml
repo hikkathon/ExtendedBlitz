@@ -126,15 +126,18 @@
                             <Setter TargetName="cp" Property="TextBlock.Foreground" Value="Black"></Setter>
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="border" Property="Background" Value="#3F3F41"></Setter>
-                            <Setter TargetName="cp" Property="TextBlock.Foreground" Value="Gray"></Setter>
+                            <Setter TargetName="border" Property="Background" Value="#E74C3C"></Setter>
+                            <Setter TargetName="cp" Property="TextBlock.Foreground" Value="White"></Setter>
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="border" Property="Background" Value="#007ACC"></Setter>
+                            <Setter TargetName="border" Property="Background" Value="#B03A2E"></Setter>
                             <Setter TargetName="cp" Property="TextBlock.Foreground" Value="White"></Setter>
                         </Trigger>
                         <DataTrigger Binding="{Binding IsOpenSession}" Value="True">
                             <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsOpenSession}" Value="False">
+                            <Setter Property="Visibility" Value="Collapsed"/>
                         </DataTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -155,18 +158,18 @@
                             <Setter TargetName="cp" Property="TextBlock.Foreground" Value="Black"></Setter>
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="border" Property="Background" Value="#3F3F41"></Setter>
-                            <Setter TargetName="cp" Property="TextBlock.Foreground" Value="Gray"></Setter>
+                            <Setter TargetName="border" Property="Background" Value="#2ECC71"></Setter>
+                            <Setter TargetName="cp" Property="TextBlock.Foreground" Value="White"></Setter>
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="border" Property="Background" Value="#007ACC"></Setter>
+                            <Setter TargetName="border" Property="Background" Value="#239B56"></Setter>
                             <Setter TargetName="cp" Property="TextBlock.Foreground" Value="White"></Setter>
                         </Trigger>
                         <DataTrigger Binding="{Binding IsOpenSession}" Value="False">
                             <Setter Property="Visibility" Value="Visible"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding IsOpenSession}" Value="True">
-                            <Setter Property="Visibility" Value="Hidden"/>
+                            <Setter Property="Visibility" Value="Collapsed"/>
                         </DataTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

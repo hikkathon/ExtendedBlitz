@@ -7,7 +7,7 @@
     <ProjectGuid>{F667A724-955A-4B84-870A-EDFE293EDC16}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>ExtendedBlitz</RootNamespace>
-    <AssemblyName>ExtendedBlitz</AssemblyName>
+    <AssemblyName>Blitz Extend</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -62,6 +62,9 @@
   <PropertyGroup>
     <SignManifests>true</SignManifests>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>blitzbury_duck.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="FontAwesome5, Version=2.1.6.0, Culture=neutral, PublicKeyToken=9cfaf01297a008f8, processorArchitecture=MSIL">
       <HintPath>..\packages\FontAwesome5.2.1.6\lib\net472\FontAwesome5.dll</HintPath>
@@ -113,7 +116,9 @@
     <Compile Include="Infrastructure\Commands\Base\CommandBase.cs" />
     <Compile Include="Infrastructure\Commands\CloseApplicationCommand.cs" />
     <Compile Include="Infrastructure\Commands\RelayCommand.cs" />
+    <Compile Include="Models\LanguageModel.cs" />
     <Compile Include="Models\WoTBlitz\Calculate.cs" />
+    <Compile Include="Models\WoTBlitz\Setting.cs" />
     <Compile Include="Models\WoTBlitz\Session.cs" />
     <Compile Include="Models\WoTBlitz\Personal data\Account.cs" />
     <Compile Include="Models\WoTBlitz\Personal data\Data.cs" />
@@ -186,6 +191,18 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="blitzbury_duck.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="unnamed.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icon_helmet.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icon_helmet_2.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

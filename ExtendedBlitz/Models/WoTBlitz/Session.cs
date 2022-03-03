@@ -34,5 +34,6 @@ namespace ExtendedBlitz.Models.WoTBlitz
         public int Spotted { get; set; }
         public int Dropped_capture_points { get; set; }
         public int Capture_points { get; set; }
+        public string Average { get; set; }
     }
 }

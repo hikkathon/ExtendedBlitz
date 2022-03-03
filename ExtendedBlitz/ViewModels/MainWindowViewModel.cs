@@ -16,6 +16,7 @@ using System.Linq;
 using System.IO;
 using System;
 using Newtonsoft.Json;
+using ExtendedBlitz.Models;
 
 namespace ExtendedBlitz.ViewModels
 {
@@ -25,11 +26,43 @@ namespace ExtendedBlitz.ViewModels
 
         public ObservableCollection<Session> Sessions { get; }
         public ObservableCollection<Battle> Battles { get; }
+        public ObservableCollection<LanguageModel> Languages { get; }
 
         ICollection<Battle> battles_1;
         ICollection<Session> sessions_1;
         Dispatcher dispatcher;
         DataService dataService;
+        public Setting Setting { get; set; }
+
+        #region Setting prop
+
+        #region account_id
+
+        private string _account_id;
+
+        /// <summary>Заголовок окна</summary>
+        public string account_id
+        {
+            get => _account_id;
+            set => Set(ref _account_id, value);
+        }
+
+        #endregion
+
+        #region access_token
+
+        private string _access_token;
+
+        /// <summary>Заголовок окна</summary>
+        public string access_token
+        {
+            get => _access_token;
+            set => Set(ref _access_token, value);
+        }
+
+        #endregion
+
+        #endregion
 
         #region Заголовок окна
 
@@ -77,11 +110,18 @@ namespace ExtendedBlitz.ViewModels
 
         #endregion
 
+        #region Selected languages
+
+        private LanguageModel _selectLanguage;
+        public LanguageModel SelectLanguage { get => _selectLanguage; set => Set(ref _selectLanguage, value); }
+
+        #endregion
+
         #region Average Stats Properties
 
         #region Средние прказатели за сессию
-        private string _averageStatsSession = 
-            "Побед/Боёв:\t\t0 (0)\t(0.0%)" + 
+        private string _averageStatsSession =
+            "Побед/Боёв:\t\t0 (0)\t(0.0%)" +
             "\nУничтожил:\t\t0\t(0.0)" +
             "\nУничтожен:\t\t0\t(0.0%)" +
             "\nПопаданий/Выстрелов:\t0/0\t(0.0%)" +
@@ -123,6 +163,19 @@ namespace ExtendedBlitz.ViewModels
         {
             get => _cts;
             set => Set(ref _cts, value);
+        }
+
+        #endregion
+
+        #region Ник игрока
+
+        private string _nickname = "@hikkathon";
+
+        /// <summary>Заголовок окна</summary>
+        public string Nickname
+        {
+            get => _nickname;
+            set => Set(ref _nickname, value);
         }
 
         #endregion
@@ -182,7 +235,7 @@ namespace ExtendedBlitz.ViewModels
         private bool CanStartSessionCommandExecuted(object p) => !IsOpenSession;
         private void OnStartSessionCommandExecuted(object p)
         {
-            Status = "Стартую!";
+            Status = " Стартую!";
 
             CTS = new CancellationTokenSource();
             var token = CTS.Token;
@@ -195,18 +248,17 @@ namespace ExtendedBlitz.ViewModels
 
             Task task = new Task(async () =>
             {
-                string application_id = "07ac358d831595916aca265c2f14750c";
-                string account_id = "71941826";
-                string region = "ru";
-
                 int i = 0;
                 int battle_max_index = 0;
                 int session_max_index = 0;
 
                 using (var client = new HttpClient())
                 {
-                    var data_service = new DataService(client, application_id, account_id, region);
+                    var data_service = new DataService(client, Setting.application_id, Setting.account_id, Setting.language);
                     constant = data_service.GetData();
+
+                    Nickname = $"{constant.data.account.nickname} ";
+
                     while (IsOpenSession)
                     {
                         loop = data_service.GetData();
@@ -283,6 +335,8 @@ namespace ExtendedBlitz.ViewModels
                                     Sessions.ElementAt(session_max_index - 1).Battles.Add(new_battle);
                                     Sessions[session_max_index - 1] = update_session;
                                 }));
+
+                                SelectSession = Sessions[session_max_index - 1]; // Выбрать последнбб сессию
                             }
 
                             constant = loop;
@@ -290,8 +344,8 @@ namespace ExtendedBlitz.ViewModels
 
                         Status = $"({i++})";
 
-                        if (SelectSession != null)
-                            AverageStatsSession = Calculate.AverageStatSession(SelectSession.StatSession);
+                        //if (SelectSession != null)
+                        //    AverageStatsSession = Calculate.AverageStatSession(SelectSession.StatSession);
 
                         await Task.Delay(2 * 1000);
                     }
@@ -317,6 +371,24 @@ namespace ExtendedBlitz.ViewModels
 
         #endregion
 
+        #region SaveSettingCommand
+
+        public ICommand SaveSettingCommandCommand { get; }
+        private bool CanSaveSettingCommandExecuted(object p) => !IsOpenSession;
+        private void OnSaveSettingCommandExecuted(object p)
+        {
+            Setting = new Setting()
+            {
+                application_id = "07ac358d831595916aca265c2f14750c",
+                account_id = account_id,
+                access_token = access_token,
+                extra = "private.grouped_contacts, statistics.rating",
+                language = p.ToString(),
+            };
+        }
+
+        #endregion
+
         #endregion
 
         /* ---------------------------------------------------------------------------------------------------- */
@@ -326,14 +398,17 @@ namespace ExtendedBlitz.ViewModels
             dispatcher = Dispatcher.CurrentDispatcher;
             dataService = new DataService();
 
-            #region Команды
+            Languages = File.Exists("Data\\Languages.json") ? JsonConvert.DeserializeObject<ObservableCollection<LanguageModel>>(File.ReadAllText("Data\\Languages.json")) : new ObservableCollection<LanguageModel>();
+
+            #region Регистрация команд 
 
             CloseApplicationCommand = new RelayCommand(OnCloseApplicationCommandExecuted, CanCloseApplicationCommandExecuted);
-            MinimizedWindowCommand  = new RelayCommand(OnMinimizedWindowCommandExecuted, CanMinimizedWindowCommandExecuted);
-            MaximizedWindowCommand  = new RelayCommand(OnMaximizedWindowCommandExecuted, CanMaximizedWindowCommandExecuted);
-            NormalWindowCommand     = new RelayCommand(OnNormalWindowCommandExecuted, CanNormalWindowCommandExecuted);
-            StartSessionCommand     = new RelayCommand(OnStartSessionCommandExecuted, CanStartSessionCommandExecuted);
-            CloseSessionCommand     = new RelayCommand(OnCloseSessionCommandExecuted, CanCloseSessionCommandExecuted);
+            MinimizedWindowCommand = new RelayCommand(OnMinimizedWindowCommandExecuted, CanMinimizedWindowCommandExecuted);
+            MaximizedWindowCommand = new RelayCommand(OnMaximizedWindowCommandExecuted, CanMaximizedWindowCommandExecuted);
+            NormalWindowCommand = new RelayCommand(OnNormalWindowCommandExecuted, CanNormalWindowCommandExecuted);
+            StartSessionCommand = new RelayCommand(OnStartSessionCommandExecuted, CanStartSessionCommandExecuted);
+            CloseSessionCommand = new RelayCommand(OnCloseSessionCommandExecuted, CanCloseSessionCommandExecuted);
+            SaveSettingCommandCommand = new RelayCommand(OnSaveSettingCommandExecuted, CanSaveSettingCommandExecuted);
 
             #endregion
 
@@ -557,7 +632,7 @@ namespace ExtendedBlitz.ViewModels
                 });
 
 
-                var fileLocalSessionJson = File.Exists("Data\\Sessions.json") ? JsonConvert.DeserializeObject<ICollection<Session>>(File.ReadAllText("Data\\Sessions.json")) : new ObservableCollection<Session>();
+                var fileLocalSessionJson = File.Exists("Data\\Save\\Sessions.json") ? JsonConvert.DeserializeObject<ICollection<Session>>(File.ReadAllText("Data\\Save\\Sessions.json")) : new ObservableCollection<Session>();
 
 
                 Sessions = new ObservableCollection<Session>(fileLocalSessionJson);

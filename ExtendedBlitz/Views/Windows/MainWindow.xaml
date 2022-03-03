@@ -11,7 +11,7 @@
         WindowState="{Binding CurWindowState, Mode=TwoWay}"
         mc:Ignorable="d"
         Title="{Binding Title}"
-        Width="800" Height="480" MinWidth="800" MinHeight="480"
+        Width="800" Height="480" MinWidth="500" MinHeight="480"
         WindowStyle="None">
     <Window.DataContext>
         <vw:MainWindowViewModel/>
@@ -29,33 +29,53 @@
                     <!--<fa5:ImageAwesome Icon="Brands_Windows" Margin="5 2 0 2" Width="20" Height="30"/>-->
                     <Image Source="/Assets/Images/icon_helmet.png" Margin="5 2 0 2" Width="32" Height="32"/>
                     <Label Content="Blitz Extend" Margin="0 0 0 0" FontWeight="Bold" FontSize="18"/>
+                    <Label Content="BETA" Margin="-8 2.6 0 0" FontWeight="Bold" FontSize="9"/>
                     <Menu Margin="5 5 0 5" Background="White" Height="18">
-                        <MenuItem Header="Помощь">
-                            <MenuItem Header="ВКонтакте">
-                                <MenuItem.Icon>
-                                    <fa5:ImageAwesome Icon="Brands_Vk"/>
-                                </MenuItem.Icon>
+                        <MenuItem Header="Справка">
+                            <MenuItem Header="Приступая к работе"/>
+                            <MenuItem Header="Советы и рекомендации"/>
+                            <Separator/>
+                            <MenuItem Header="Отправить отзыв">
+                                <MenuItem Header="Сообщить о проблеме">
+                                    <MenuItem.Icon>
+                                        <fa5:SvgAwesome Icon="Solid_ExclamationCircle"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <MenuItem Header="Предложить функцию">
+                                    <MenuItem.Icon>
+                                        <fa5:SvgAwesome Icon="Regular_Comment"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
                             </MenuItem>
-                            <MenuItem Header="Twitch">
-                                <MenuItem.Icon>
-                                    <fa5:ImageAwesome Icon="Brands_Twitch"/>
-                                </MenuItem.Icon>
+                            <MenuItem Header="Присоединяйтесь к нам в социальных сетях">
+                                <MenuItem Header="ВКонтакте">
+                                    <MenuItem.Icon>
+                                        <fa5:ImageAwesome Icon="Brands_Vk"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <MenuItem Header="Twitch">
+                                    <MenuItem.Icon>
+                                        <fa5:ImageAwesome Icon="Brands_Twitch"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <MenuItem Header="Youtube">
+                                    <MenuItem.Icon>
+                                        <fa5:ImageAwesome Icon="Brands_Youtube"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <MenuItem Header="Discord">
+                                    <MenuItem.Icon>
+                                        <fa5:ImageAwesome Icon="Brands_Discord"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <MenuItem Header="Telegram">
+                                    <MenuItem.Icon>
+                                        <fa5:ImageAwesome Icon="Brands_Telegram"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
                             </MenuItem>
-                            <MenuItem Header="Youtube">
-                                <MenuItem.Icon>
-                                    <fa5:ImageAwesome Icon="Brands_Youtube"/>
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <MenuItem Header="Discord">
-                                <MenuItem.Icon>
-                                    <fa5:ImageAwesome Icon="Brands_Discord"/>
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <MenuItem Header="Telegram">
-                                <MenuItem.Icon>
-                                    <fa5:ImageAwesome Icon="Brands_Telegram"/>
-                                </MenuItem.Icon>
-                            </MenuItem>
+                            <Separator/>
+                            <MenuItem Header="О программе Blitz Extend"/>
                         </MenuItem>
                     </Menu>
                 </StackPanel>
@@ -94,7 +114,7 @@
                 <StatusBarItem>
                     <StackPanel Orientation="Horizontal" Margin="3 0 0 0">
                         <fa5:SvgAwesome Icon="Regular_User" Foreground="White" Height="13" Margin="0 0 5 0"/>
-                        <TextBlock Foreground="White" Text="HINCO "/>
+                        <TextBlock Foreground="White" Text="{Binding Nickname}"/>
                         <TextBlock Foreground="White" Text="{Binding Status}"/>
                     </StackPanel>
                 </StatusBarItem>
@@ -110,14 +130,18 @@
                                 </Grid.ColumnDefinitions>
                                 <Grid Grid.Column="0">
                                     <Grid.RowDefinitions>
+                                        <RowDefinition Height="45"/>
                                         <RowDefinition Height="*"/>
                                         <RowDefinition Height="165"/>
                                     </Grid.RowDefinitions>
-                                    <GroupBox Grid.Row="0" Header="Сессия">
+                                    <StackPanel Grid.Row="0" VerticalAlignment="Center" Margin="0 5 0 0">
+                                        <Button Height="32" Content="Завершить сессию" Margin="2 2 2 2" Style="{StaticResource CloseSessionButton}" Command="{Binding CloseSessionCommand}"/>
+                                        <Button Height="32" Content="Начать сессию" Margin="2 2 2 2" Style="{StaticResource StartSessionButton}" Command="{Binding StartSessionCommand}"/>
+                                    </StackPanel>                                    
+                                    <GroupBox Grid.Row="1" Header="Сессия">
                                         <Grid>
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="*"/>
-                                                <RowDefinition Height="32"/>
                                             </Grid.RowDefinitions>
                                             <ListBox Grid.Row="0" ItemsSource="{Binding Sessions}" SelectedItem="{Binding SelectSession}" SelectedIndex="0">
                                                 <ListBox.ItemTemplate>
@@ -129,17 +153,15 @@
                                                     </DataTemplate>
                                                 </ListBox.ItemTemplate>
                                             </ListBox>
-                                            <Button Grid.Row="1" Content="Завершить сессию" Margin="2 2 2 2" Style="{StaticResource CloseSessionButton}" Command="{Binding CloseSessionCommand}"/>
-                                            <Button Grid.Row="1" Content="Начать сессию" Margin="2 2 2 2" Style="{StaticResource StartSessionButton}" Command="{Binding StartSessionCommand}"/>
                                         </Grid>
                                     </GroupBox>
-                                    <GroupBox Grid.Row="1" Header="Статистика за сессию">
+                                    <GroupBox Grid.Row="2" Header="Статистика за сессию">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
                                             <StackPanel Grid.Column="0">
-                                                <TextBlock Text="{Binding AverageStatsSession}"/>
+                                                <TextBlock Text="{Binding SelectSession.StatSession.Average}"/>
                                             </StackPanel>
                                         </Grid>
                                     </GroupBox>
@@ -215,8 +237,36 @@
                 <TabItem Header="Накладные элементы" IsEnabled="False">
 
                 </TabItem>
-                <TabItem Header="Настройки" IsEnabled="False">
-                    
+                <TabItem Header="Настройки">
+                    <StackPanel HorizontalAlignment="Left" Margin="5 5 0 0" Orientation="Vertical">
+                        <StackPanel Orientation="Vertical" Margin="0 0 0 5">
+                            <TextBlock Text="Ид"/>
+                            <TextBox Text="{Binding account_id, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+                        <CheckBox Name="Check_Private" Content="Расширенная статистика" Margin="0 5 0 5"/>
+                        <StackPanel Orientation="Vertical" Margin="0 0 0 5">
+                            <StackPanel.Style>
+                                <Style TargetType="StackPanel">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ElementName=Check_Private, Path=IsChecked}" Value="False">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </StackPanel.Style>
+                            <TextBlock Text="Токен"/>
+                            <TextBox Text="{Binding access_token, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+                        <TextBlock Text="Язык"/>
+                        <ComboBox  ItemsSource="{Binding Languages}" SelectedItem="{Binding SelectLanguage}" SelectedIndex="1">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate DataType="LanguageModel">
+                                    <TextBlock Text="{Binding Language_Name}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <Button Content="Сохранить" Margin="0 10 0 0" Height="32" Style="{StaticResource StartSessionButton}" Command="{Binding SaveSettingCommandCommand}" CommandParameter="{Binding SelectLanguage.Language}"/>
+                    </StackPanel>
                 </TabItem>
             </TabControl>
         </DockPanel>
