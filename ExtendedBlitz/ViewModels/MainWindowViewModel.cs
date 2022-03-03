@@ -279,6 +279,7 @@ namespace ExtendedBlitz.ViewModels
                                 {
                                     Id = battle_max_index,
                                     Status = status,
+                                    Time = DateTimeHelper.ToUnixTimestamp(DateTime.Now),
                                     Player = Calculate.SubtractLoopOfConstant(constant, loop),
                                 };
 
@@ -295,7 +296,7 @@ namespace ExtendedBlitz.ViewModels
                                     var new_session = new Session
                                     {
                                         Id = session_max_index,
-                                        Name = $"Сессия ({session_max_index})",
+                                        Title = $"Сессия ({session_max_index})",
                                         Time = DateTimeHelper.ToUnixTimestamp(DateTime.Now),
                                         Battles = new ObservableCollection<Battle>(Battles),
                                         StatSession = Calculate.GetStatBattleSession(Battles),
@@ -315,6 +316,7 @@ namespace ExtendedBlitz.ViewModels
                                 {
                                     Id = battle_max_index,
                                     Status = status,
+                                    Time = DateTimeHelper.ToUnixTimestamp(DateTime.Now),
                                     Player = Calculate.SubtractLoopOfConstant(constant, loop)
                                 };
                                 #endregion
@@ -323,7 +325,7 @@ namespace ExtendedBlitz.ViewModels
                                 var update_session = new Session
                                 {
                                     Id = session_max_index,
-                                    Name = $"Сессия ({session_max_index})",
+                                    Title = $"Сессия ({session_max_index})",
                                     Time = DateTimeHelper.ToUnixTimestamp(DateTime.Now),
                                     Battles = new ObservableCollection<Battle>(Battles),
                                     StatSession = Calculate.GetStatBattleSession(Battles)
@@ -514,7 +516,7 @@ namespace ExtendedBlitz.ViewModels
                 var sessions = Enumerable.Range(1, 10).Select(i => new Session
                 {
                     Id = i,
-                    Name = $"Сессия {i}",
+                    Title = $"Сессия {i}",
                     Time = DateTimeHelper.ToUnixTimestamp(DateTime.Now),
                     Battles = new ObservableCollection<Battle>(battles)
                 });
@@ -625,7 +627,7 @@ namespace ExtendedBlitz.ViewModels
                 sessions_1.Add(new Session
                 {
                     Id = 1,
-                    Name = "TEST 1",
+                    Title = "Сессия (1)",
                     Time = DateTimeHelper.ToUnixTimestamp(DateTime.Now),
                     Battles = new ObservableCollection<Battle>(battles_1),
                     StatSession = Calculate.GetStatBattleSession(battles_1)

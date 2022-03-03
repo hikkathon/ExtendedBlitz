@@ -1,5 +1,6 @@
 ﻿using ExtendedBlitz.Models.WoTBlitz.Personal_data;
 using System.Collections.Generic;
+using ExtendedBlitz.Services;
 using System;
 
 namespace ExtendedBlitz.Models.WoTBlitz
@@ -8,16 +9,27 @@ namespace ExtendedBlitz.Models.WoTBlitz
     {
         public int Id { get; set; }
         public string Status { get; set; } // победа/поражение
+        public long Time { get; set; }
         public Player Player { get; set; }
+
+        public string BattleTime
+        {
+            get { return DateTimeHelper.ParseUnixTimestamp(Time).ToString("dd.MM.yyyy hh:mm:ss"); }
+        }
     }
 
     internal class Session
     {
         public int Id { get; set; }
-        public string Name { get; set; }
+        public string Title { get; set; }
         public long Time { get; set; }
         public ICollection<Battle> Battles { get; set; }
         public StatSession StatSession { get; set; }
+
+        public string SessionTime
+        {
+            get { return DateTimeHelper.ParseUnixTimestamp(Time).ToString("dd.MM.yyyy hh:mm:ss"); }
+        }
     }
 
     internal class StatSession

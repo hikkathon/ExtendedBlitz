@@ -116,6 +116,11 @@
     <Compile Include="Infrastructure\Commands\Base\CommandBase.cs" />
     <Compile Include="Infrastructure\Commands\CloseApplicationCommand.cs" />
     <Compile Include="Infrastructure\Commands\RelayCommand.cs" />
+    <Compile Include="Infrastructure\Commands\Social\OpenDiscordCommand.cs" />
+    <Compile Include="Infrastructure\Commands\Social\OpenTelegramCommand.cs" />
+    <Compile Include="Infrastructure\Commands\Social\OpenTwitchCommand.cs" />
+    <Compile Include="Infrastructure\Commands\Social\OpenVKCommand.cs" />
+    <Compile Include="Infrastructure\Commands\Social\OpenYouTubeCommand.cs" />
     <Compile Include="Models\LanguageModel.cs" />
     <Compile Include="Models\WoTBlitz\Calculate.cs" />
     <Compile Include="Models\WoTBlitz\Setting.cs" />
