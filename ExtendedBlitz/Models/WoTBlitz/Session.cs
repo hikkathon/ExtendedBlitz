@@ -1,7 +1,6 @@
 ﻿using ExtendedBlitz.Models.WoTBlitz.Personal_data;
 using System.Collections.Generic;
 using ExtendedBlitz.Services;
-using System;
 
 namespace ExtendedBlitz.Models.WoTBlitz
 {
@@ -47,5 +46,10 @@ namespace ExtendedBlitz.Models.WoTBlitz
         public int Dropped_capture_points { get; set; }
         public int Capture_points { get; set; }
         public string Average { get; set; }
+
+        public string WinRate
+        {
+            get { return $"{System.Math.Round((float)Wins / (float)Battles * 100.0f, 0)}%"; }
+        }
     }
 }

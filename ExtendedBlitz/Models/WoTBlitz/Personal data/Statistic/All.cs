@@ -21,5 +21,22 @@
         public int win_and_survived { get; set; }
         public int survived_battles { get; set; }
         public int dropped_capture_points { get; set; }
+
+        public string GetAll
+        {
+            get 
+            { 
+                return 
+                    $"Обнаружил:\t\t{spotted}" +
+                    $"\nПопаданий:\t\t{hits}" +
+                    $"\nУничтожил:\t\t{frags}" +
+                    $"\nНанесённый урон:\t{damage_dealt}" +
+                    $"\nПолученный урон:\t{damage_received}" +
+                    $"\nВыстрелов:\t\t{shots}" +
+                    $"\nОпыт:\t\t\t{xp}" +
+                    $"\nОчки захвата базы:\t{capture_points}" +
+                    $"\nОчки защиты базы:\t{dropped_capture_points}"; 
+            }
+        }
     }
 }

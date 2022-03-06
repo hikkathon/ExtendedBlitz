@@ -11,7 +11,7 @@
         WindowState="{Binding CurWindowState, Mode=TwoWay}"
         mc:Ignorable="d"
         Title="{Binding Title}"
-        Width="800" Height="480" MinWidth="500" MinHeight="480"
+        Width="800" Height="480" MinWidth="700" MinHeight="480"
         WindowStyle="None">
     <Window.DataContext>
         <vw:MainWindowViewModel/>
@@ -152,6 +152,7 @@
                                     <StackPanel Grid.Row="0" VerticalAlignment="Center" Margin="0 5 0 0">
                                         <Button Height="32" Content="Завершить сессию" Margin="2 2 2 2" Style="{StaticResource CloseSessionButton}" Command="{Binding CloseSessionCommand}"/>
                                         <Button Height="32" Content="Начать сессию" Margin="2 2 2 2" Style="{StaticResource StartSessionButton}" Command="{Binding StartSessionCommand}"/>
+                                        <Button Height="32" Content="Что то пошло не так" Margin="2 2 2 2" Style="{StaticResource TimeOutButton}" Command="{Binding CloseApplicationCommand}"/>
                                     </StackPanel>                                    
                                     <GroupBox Grid.Row="1" Header="Сессия">
                                         <Grid>
@@ -161,12 +162,21 @@
                                             <ListBox Grid.Row="0" ItemsSource="{Binding Sessions}" SelectedItem="{Binding SelectSession}" SelectedIndex="0">
                                                 <ListBox.ItemTemplate>
                                                     <DataTemplate DataType="Session">
-                                                        <StackPanel>
-                                                            <StackPanel Orientation="Horizontal">
-                                                                <TextBlock Text="{Binding Title}"/>
-                                                                <TextBlock Text="{Binding Battles.Count, StringFormat = [Боев: {0}]}" Margin="3 0 0 0"/>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                                <Border Background="Black" CornerRadius="2.5">
+                                                                    <Grid Background="White" Width="28" Height="28" Margin="1 1 1 1">
+                                                                        <TextBlock Text="{Binding StatSession.WinRate}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                                                    </Grid>                                                                    
+                                                                </Border>
                                                             </StackPanel>
-                                                            <TextBlock Text="{Binding SessionTime}"/>
+                                                            <StackPanel Margin="8 0 0 0">
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <TextBlock Text="{Binding Title}"/>
+                                                                    <TextBlock Text="{Binding Battles.Count, StringFormat = [Боев: {0}]}" Margin="3 0 0 0"/>
+                                                                </StackPanel>
+                                                                <TextBlock Text="{Binding SessionTime}"/>
+                                                            </StackPanel>
                                                         </StackPanel>
                                                     </DataTemplate>
                                                 </ListBox.ItemTemplate>
@@ -212,13 +222,6 @@
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
                                             </DataGridTemplateColumn>
-                                            <DataGridTemplateColumn Header="Игрок" Width="*">
-                                                <DataGridTemplateColumn.CellTemplate>
-                                                    <DataTemplate>
-                                                        <TextBlock Text="{Binding Player.data.account.nickname}"/>
-                                                    </DataTemplate>
-                                                </DataGridTemplateColumn.CellTemplate>
-                                            </DataGridTemplateColumn>
                                             <DataGridTemplateColumn Header="Дата" Width="*">
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
@@ -234,26 +237,27 @@
                                                         <Grid.ColumnDefinitions>
                                                             <ColumnDefinition/>
                                                         </Grid.ColumnDefinitions>
-                                                        <StackPanel Grid.Column="0">
-                                                            <TextBlock Text="{Binding Player.data.account.statistics.all.spotted, StringFormat = Обнаружил: {0}}"/>
-                                                            <!--<TextBlock Text="{Binding Player.data.account.statistics.all.max_frags_tank_id, StringFormat = max_frags_tank_id: {0}}"/>-->
+                                                        <StackPanel Grid.Column="0" Margin="5 5 5 5">
+                                                            <TextBlock Text="{Binding Player.data.account.statistics.all.GetAll}"/>
+                                                            <!--<TextBlock Text="{Binding Player.data.account.statistics.all.spotted, StringFormat = Обнаружил: {0}}"/>
+                                                            <TextBlock Text="{Binding Player.data.account.statistics.all.max_frags_tank_id, StringFormat = max_frags_tank_id: {0}}"/>
                                                             <TextBlock Text="{Binding Player.data.account.statistics.all.hits, StringFormat = Попаданий: {0}}"/>
                                                             <TextBlock Text="{Binding Player.data.account.statistics.all.frags, StringFormat = Уничтожил: {0}}"/>
-                                                            <!--<TextBlock Text="{Binding Player.data.account.statistics.all.max_xp, StringFormat = max_xp: {0}}"/>-->
-                                                            <!--<TextBlock Text="{Binding Player.data.account.statistics.all.max_xp_tank_id, StringFormat = max_xp_tank_id: {0}}"/>-->
-                                                            <!--<TextBlock Text="{Binding Player.data.account.statistics.all.wins, StringFormat = wins: {0}}"/>-->
-                                                            <!--<TextBlock Text="{Binding Player.data.account.statistics.all.losses, StringFormat = losses: {0}}"/>-->
-                                                            <!--<TextBlock Text="{Binding Player.data.account.statistics.all.battles, StringFormat = battles: {0}}"/>-->
+                                                            <TextBlock Text="{Binding Player.data.account.statistics.all.max_xp, StringFormat = max_xp: {0}}"/>
+                                                            <TextBlock Text="{Binding Player.data.account.statistics.all.max_xp_tank_id, StringFormat = max_xp_tank_id: {0}}"/>
+                                                            <TextBlock Text="{Binding Player.data.account.statistics.all.wins, StringFormat = wins: {0}}"/>
+                                                            <TextBlock Text="{Binding Player.data.account.statistics.all.losses, StringFormat = losses: {0}}"/>
+                                                            <TextBlock Text="{Binding Player.data.account.statistics.all.battles, StringFormat = battles: {0}}"/>
                                                             <TextBlock Text="{Binding Player.data.account.statistics.all.damage_dealt, StringFormat = Нанесённый урон: {0}}"/>
                                                             <TextBlock Text="{Binding Player.data.account.statistics.all.damage_received, StringFormat = Полученный урон: {0}}"/>
-                                                            <!--<TextBlock Text="{Binding Player.data.account.statistics.all.max_frags, StringFormat = max_frags: {0}}"/>-->
+                                                            <TextBlock Text="{Binding Player.data.account.statistics.all.max_frags, StringFormat = max_frags: {0}}"/>
                                                             <TextBlock Text="{Binding Player.data.account.statistics.all.shots, StringFormat = Выстрелов: {0}}"/>
-                                                            <!--<TextBlock Text="{Binding Player.data.account.statistics.all.frags8p, StringFormat = frags8p: {0}}"/>-->
+                                                            <TextBlock Text="{Binding Player.data.account.statistics.all.frags8p, StringFormat = frags8p: {0}}"/>
                                                             <TextBlock Text="{Binding Player.data.account.statistics.all.xp, StringFormat = Опыт за бой: {0}}"/>
-                                                            <!--<TextBlock Text="{Binding Player.data.account.statistics.all.win_and_survived, StringFormat = win_and_survived: {0}}"/>-->
-                                                            <!--<TextBlock Text="{Binding Player.data.account.statistics.all.survived_battles, StringFormat = survived_battles: {0}}"/>-->
+                                                            <TextBlock Text="{Binding Player.data.account.statistics.all.win_and_survived, StringFormat = win_and_survived: {0}}"/>
+                                                            <TextBlock Text="{Binding Player.data.account.statistics.all.survived_battles, StringFormat = survived_battles: {0}}"/>
                                                             <TextBlock Text="{Binding Player.data.account.statistics.all.capture_points, StringFormat = Очки захвата базы: {0}}"/>
-                                                            <TextBlock Text="{Binding Player.data.account.statistics.all.dropped_capture_points, StringFormat = Очки защиты базы: {0}}"/>
+                                                            <TextBlock Text="{Binding Player.data.account.statistics.all.dropped_capture_points, StringFormat = Очки защиты базы: {0}}"/>-->
                                                         </StackPanel>
                                                     </Grid>
                                                 </StackPanel>
@@ -273,7 +277,7 @@
                 <TabItem Header="Настройки">
                     <StackPanel HorizontalAlignment="Left" Margin="5 5 0 0" Orientation="Vertical">
                         <StackPanel Orientation="Vertical" Margin="0 0 0 5">
-                            <TextBlock Text="Ид"/>
+                            <TextBlock Text="User ID"/>
                             <TextBox Text="{Binding account_id, UpdateSourceTrigger=PropertyChanged}"/>
                         </StackPanel>
                         <CheckBox Name="Check_Private" Content="Расширенная статистика" Margin="0 5 0 5"/>

@@ -180,6 +180,21 @@ namespace ExtendedBlitz.ViewModels
 
         #endregion
 
+        // TODO: Придумать систему подписки
+        #region IsTimeOut : bool - Флаг
+
+
+        private bool _isTimeOut;
+
+        /// <summary>Флаг показывает открыта сессия или нет</summary>
+        public bool IsTimeOut
+        {
+            get => _isTimeOut;
+            set => Set(ref _isTimeOut, value);
+        }
+
+        #endregion
+
         /* ---------------------------------------------------------------------------------------------------- */
 
         #region Команды
@@ -397,10 +412,13 @@ namespace ExtendedBlitz.ViewModels
 
         public MainWindowViewModel()
         {
+            DateTime date = new DateTime(2022, 3, 8, 00, 00, 00); // 20.07.2015 18:30:25
+            long _time = DateTimeHelper.ToUnixTimestamp(date); // Время до которого прога будет работать
+            long _timeCurrent = DateTimeHelper.ToUnixTimestamp(DateTime.Now); // Текущее время
+            if(_timeCurrent > _time) IsTimeOut = true;
+
             dispatcher = Dispatcher.CurrentDispatcher;
             dataService = new DataService();
-
-            Languages = File.Exists("Data\\Languages.json") ? JsonConvert.DeserializeObject<ObservableCollection<LanguageModel>>(File.ReadAllText("Data\\Languages.json")) : new ObservableCollection<LanguageModel>();
 
             #region Регистрация команд 
 
@@ -639,6 +657,7 @@ namespace ExtendedBlitz.ViewModels
 
                 Sessions = new ObservableCollection<Session>(fileLocalSessionJson);
                 Battles = new ObservableCollection<Battle>();
+                Languages = File.Exists("Data\\Languages.json") ? JsonConvert.DeserializeObject<ObservableCollection<LanguageModel>>(File.ReadAllText("Data\\Languages.json")) : new ObservableCollection<LanguageModel>();
             }
         }
     }
