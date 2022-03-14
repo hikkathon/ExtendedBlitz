@@ -16,5 +16,10 @@ namespace ExtendedBlitz.ViewModels
         }
 
         #endregion
+
+        public StatSessionViewModel()
+        {
+
+        }
     }
 }

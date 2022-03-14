@@ -267,7 +267,7 @@
                                 </GroupBox>
                             </Grid>
                         </TabItem>
-                        <TabItem Header="Дамаг панель" IsEnabled="False"></TabItem>
+                        <TabItem Header="Дамаг панель"></TabItem>
                         <TabItem Header="Оленемер" IsEnabled="False"></TabItem>
                     </TabControl>
                 </TabItem>

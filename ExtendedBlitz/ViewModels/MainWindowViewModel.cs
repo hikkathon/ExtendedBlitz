@@ -36,6 +36,7 @@ namespace ExtendedBlitz.ViewModels
         public Setting Setting { get; set; }
 
         StatSessionView StatSessionView = new StatSessionView();
+        DamageWindowView DamageWindowView = new DamageWindowView(); // TEST
 
         #region Setting prop
 
@@ -377,6 +378,7 @@ namespace ExtendedBlitz.ViewModels
                 }
             }, token);
             StatSessionView.Show();
+            DamageWindowView.Show();
             task.Start();
         }
 

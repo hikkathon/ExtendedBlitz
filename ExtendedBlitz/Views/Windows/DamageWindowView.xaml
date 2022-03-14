@@ -1,0 +1,47 @@
+﻿<Window x:Class="ExtendedBlitz.Views.Windows.DamageWindowView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ExtendedBlitz.Views.Windows" 
+        xmlns:vw="clr-namespace:ExtendedBlitz.ViewModels"
+        mc:Ignorable="d"
+        Title="DamageWindowView" Height="70" Width="200"
+        Topmost="True"
+        WindowStartupLocation="Manual"
+        AllowsTransparency="True"
+        WindowStyle="None" ShowInTaskbar="False">
+    
+    <Window.Background>
+        <SolidColorBrush Opacity="0.0" Color="White"/>
+    </Window.Background>
+
+    <Window.DataContext>
+        <vw:DamageWindowViewModel/>
+    </Window.DataContext>
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="15"/>
+    </WindowChrome.WindowChrome>
+
+    <Window.Resources>
+        <Style x:Key="CustomFont">
+            <Setter 
+                Property="TextElement.FontFamily" 
+                Value="/Assets/Fonts/WarHeliosCondCBold.ttf #WarHeliosCondCBold"/>
+        </Style>
+    </Window.Resources>
+    
+    <Grid>
+        <StackPanel Orientation="Vertical">
+            <StackPanel Margin="0 10 0 0">
+                <Image x:Name="ImgDamage" Grid.Column="1"  Source="/Assets/Images/Damage.png" Width="85" Height="18" HorizontalAlignment="Left" Opacity=".9"/>
+                <TextBlock x:Name="DamageText" Text="0" Margin="26 -20 0 0" Foreground="White" FontSize="18" FontWeight="Bold" Opacity=".9" Style="{StaticResource CustomFont}"/>
+            </StackPanel>
+            <StackPanel Margin="0 10 0 0">
+                <Image x:Name="ImgBlocked" Grid.Column="1"  Source="/Assets/Images/Blocked.png" Width="85" Height="18" HorizontalAlignment="Left" Opacity=".9"/>
+                <TextBlock x:Name="BlockedText" Text="0" Margin="26 -20 0 0" Foreground="White" FontSize="18" FontWeight="Bold" Opacity=".9" Style="{StaticResource CustomFont}"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>

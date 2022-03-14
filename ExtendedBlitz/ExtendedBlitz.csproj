@@ -101,11 +101,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ViewModels\DamageWindowViewModel.cs" />
     <Compile Include="ViewModels\StatSessionViewModel.cs" />
+    <Compile Include="Views\Windows\DamageWindowView.xaml.cs">
+      <DependentUpon>DamageWindowView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Windows\StatSessionView.xaml.cs">
       <DependentUpon>StatSessionView.xaml</DependentUpon>
     </Compile>
     <Page Include="Assets\Styles\Style.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Windows\DamageWindowView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -169,6 +177,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Resource Include="Assets\Fonts\WarHeliosCondCBold.ttf" />
     <None Include="ExtendedBlitz_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -180,7 +189,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Assets\Fonts\" />
     <Folder Include="Data\" />
     <Folder Include="Models\Abstract\" />
   </ItemGroup>
@@ -216,6 +224,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="icon_helmet_2.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Images\damage.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Images\blocked.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Images\health.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
