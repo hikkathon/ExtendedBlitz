@@ -10,7 +10,7 @@
         WindowStartupLocation="CenterScreen"
         WindowState="{Binding CurWindowState, Mode=TwoWay}"
         mc:Ignorable="d"
-        Title="{Binding Title}"
+        Title="MainWindowView"
         Width="800" Height="480" MinWidth="700" MinHeight="480"
         WindowStyle="None">
     <Window.DataContext>
@@ -271,8 +271,23 @@
                         <TabItem Header="Оленемер" IsEnabled="False"></TabItem>
                     </TabControl>
                 </TabItem>
-                <TabItem Header="Накладные элементы" IsEnabled="False">
-
+                <TabItem Header="Накладные элементы" IsEnabled="True">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <GroupBox Grid.Row="0" Header="Послебоевая статистика">
+                            <Button Content="Показать" Width="120" Height="32" Style="{StaticResource StartSessionButton}"/>
+                        </GroupBox>
+                        <GroupBox Grid.Row="1" Header="Дамаг панель">
+                            <Button Content="Показать" Width="120" Height="32" Style="{StaticResource StartSessionButton}"/>
+                        </GroupBox>
+                        <GroupBox Grid.Row="2" Header="Оленемер">
+                            <Label Content="Скоро" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </GroupBox>
+                    </Grid>
                 </TabItem>
                 <TabItem Header="Настройки">
                     <StackPanel HorizontalAlignment="Left" Margin="5 5 0 0" Orientation="Vertical">

@@ -17,6 +17,7 @@ using System.IO;
 using System;
 using Newtonsoft.Json;
 using ExtendedBlitz.Models;
+using ExtendedBlitz.Views.Windows;
 
 namespace ExtendedBlitz.ViewModels
 {
@@ -33,6 +34,8 @@ namespace ExtendedBlitz.ViewModels
         Dispatcher dispatcher;
         DataService dataService;
         public Setting Setting { get; set; }
+
+        StatSessionView StatSessionView = new StatSessionView();
 
         #region Setting prop
 
@@ -353,7 +356,7 @@ namespace ExtendedBlitz.ViewModels
                                     Sessions[session_max_index - 1] = update_session;
                                 }));
 
-                                SelectSession = Sessions[session_max_index - 1]; // Выбрать последнбб сессию
+                                SelectSession = Sessions[session_max_index - 1]; // Выбрать последнюю сессию
                             }
 
                             constant = loop;
@@ -364,10 +367,16 @@ namespace ExtendedBlitz.ViewModels
                         //if (SelectSession != null)
                         //    AverageStatsSession = Calculate.AverageStatSession(SelectSession.StatSession);
 
+                        dispatcher.Invoke(new Action(() =>
+                        {                            
+                            ((StatSessionViewModel)StatSessionView.DataContext).Stats = Sessions[Sessions.Count - 1].StatSession.Average;
+                        }));
+
                         await Task.Delay(2 * 1000);
                     }
                 }
             }, token);
+            StatSessionView.Show();
             task.Start();
         }
 
@@ -412,13 +421,15 @@ namespace ExtendedBlitz.ViewModels
 
         public MainWindowViewModel()
         {
-            DateTime date = new DateTime(2022, 3, 8, 00, 00, 00); // 20.07.2015 18:30:25
+            DateTime date = new DateTime(2022, 3, 20, 00, 00, 00); // 20.07.2015 18:30:25
             long _time = DateTimeHelper.ToUnixTimestamp(date); // Время до которого прога будет работать
             long _timeCurrent = DateTimeHelper.ToUnixTimestamp(DateTime.Now); // Текущее время
             if(_timeCurrent > _time) IsTimeOut = true;
 
             dispatcher = Dispatcher.CurrentDispatcher;
             dataService = new DataService();
+            StatSessionView.DataContext = new StatSessionViewModel();
+
 
             #region Регистрация команд 
 
