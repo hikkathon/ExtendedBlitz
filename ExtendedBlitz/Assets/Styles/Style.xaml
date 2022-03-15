@@ -236,4 +236,10 @@
             </DataTrigger>
         </Style.Triggers>
     </Style>
+
+    <Style x:Key="CustomFont">
+        <Setter 
+                Property="TextElement.FontFamily" 
+                Value="/Assets/Fonts/WarHeliosCondCBold.ttf #WarHeliosCondCBold"/>
+    </Style>
 </ResourceDictionary>

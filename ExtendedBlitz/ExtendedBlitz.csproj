@@ -101,6 +101,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Services\MemoryScanner.cs" />
+    <Compile Include="Services\Utility.cs" />
     <Compile Include="ViewModels\DamageWindowViewModel.cs" />
     <Compile Include="ViewModels\StatSessionViewModel.cs" />
     <Compile Include="Views\Windows\DamageWindowView.xaml.cs">

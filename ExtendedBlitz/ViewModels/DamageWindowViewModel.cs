@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using System.Linq;
 using System.Text;
 using System;
+using ExtendedBlitz.Services;
+using System.Windows;
 
 namespace ExtendedBlitz.ViewModels
 {
@@ -48,9 +50,31 @@ namespace ExtendedBlitz.ViewModels
 
         #endregion
 
+        #region VisibilityDamage : Если активна то открыть окно статистики
+
+        private Visibility _visibilityDamage;
+
+        /// <summary>Окно статистики</summary>
+        public Visibility VisibilityDamage
+        {
+            get => _visibilityDamage;
+            set => Set(ref _visibilityDamage, value);
+        }
+
+        #endregion
+
         public DamageWindowViewModel()
         {
+            MemoryScanner MemoryScanner = new MemoryScanner("wotblitz.exe");
 
+            try
+            {
+                MemoryScanner.GetBaseAddress();
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show($"Игру запусти а потом оверлей\n\nException: {exc.Message}", $"Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }

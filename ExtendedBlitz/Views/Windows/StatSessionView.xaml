@@ -10,7 +10,7 @@
         Topmost="True"
         WindowStartupLocation="Manual"
         AllowsTransparency="True"
-        WindowStyle="None" ShowInTaskbar="False">
+        WindowStyle="None" ShowInTaskbar="True">
 
     <Window.Background>
         <SolidColorBrush Opacity="0.0" Color="White"/>
@@ -24,7 +24,7 @@
         <WindowChrome CaptionHeight="15"/>
     </WindowChrome.WindowChrome>
 
-    <Grid>
+    <Grid Visibility="{Binding VisibilityStats}">
         <Label Foreground="White" FontSize="14" Content="{Binding Stats}">
             <Label.Effect>
                 <DropShadowEffect

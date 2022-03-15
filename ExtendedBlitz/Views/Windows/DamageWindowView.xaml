@@ -10,7 +10,7 @@
         Topmost="True"
         WindowStartupLocation="Manual"
         AllowsTransparency="True"
-        WindowStyle="None" ShowInTaskbar="False">
+        WindowStyle="None" ShowInTaskbar="True">
     
     <Window.Background>
         <SolidColorBrush Opacity="0.0" Color="White"/>
@@ -24,23 +24,23 @@
         <WindowChrome CaptionHeight="15"/>
     </WindowChrome.WindowChrome>
 
-    <Window.Resources>
+    <!--<Window.Resources>
         <Style x:Key="CustomFont">
             <Setter 
                 Property="TextElement.FontFamily" 
                 Value="/Assets/Fonts/WarHeliosCondCBold.ttf #WarHeliosCondCBold"/>
         </Style>
-    </Window.Resources>
-    
-    <Grid>
+    </Window.Resources>-->
+
+    <Grid Visibility="{Binding VisibilityDamage}">
         <StackPanel Orientation="Vertical">
             <StackPanel Margin="0 10 0 0">
                 <Image x:Name="ImgDamage" Grid.Column="1"  Source="/Assets/Images/Damage.png" Width="85" Height="18" HorizontalAlignment="Left" Opacity=".9"/>
-                <TextBlock x:Name="DamageText" Text="0" Margin="26 -20 0 0" Foreground="White" FontSize="18" FontWeight="Bold" Opacity=".9" Style="{StaticResource CustomFont}"/>
+                <TextBlock x:Name="DamageText" Text="{Binding Damage}" Margin="26 -20 0 0" Foreground="White" FontSize="18" FontWeight="Bold" Opacity=".9" Style="{StaticResource CustomFont}"/>
             </StackPanel>
             <StackPanel Margin="0 10 0 0">
                 <Image x:Name="ImgBlocked" Grid.Column="1"  Source="/Assets/Images/Blocked.png" Width="85" Height="18" HorizontalAlignment="Left" Opacity=".9"/>
-                <TextBlock x:Name="BlockedText" Text="0" Margin="26 -20 0 0" Foreground="White" FontSize="18" FontWeight="Bold" Opacity=".9" Style="{StaticResource CustomFont}"/>
+                <TextBlock x:Name="BlockedText" Text="{Binding DamageBlocked}" Margin="26 -20 0 0" Foreground="White" FontSize="18" FontWeight="Bold" Opacity=".9" Style="{StaticResource CustomFont}"/>
             </StackPanel>
         </StackPanel>
     </Grid>

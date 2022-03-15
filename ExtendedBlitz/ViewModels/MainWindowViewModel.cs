@@ -184,6 +184,32 @@ namespace ExtendedBlitz.ViewModels
 
         #endregion
 
+        #region IsShowWindowStats : Если активна то открыть окно статистики
+
+        private bool _isShowWindowStats = false;
+
+        /// <summary>Окно статистики</summary>
+        public bool IsShowWindowStats
+        {
+            get => _isShowWindowStats;
+            set => Set(ref _isShowWindowStats, value);
+        }
+
+        #endregion
+
+        #region IsShowWindowDamage : Если активна то открыть окно статистики
+
+        private bool _isShowWindowDamage = false;
+
+        /// <summary>Окно статистики</summary>
+        public bool IsShowWindowDamage
+        {
+            get => _isShowWindowDamage;
+            set => Set(ref _isShowWindowDamage, value);
+        }
+
+        #endregion
+
         // TODO: Придумать систему подписки
         #region IsTimeOut : bool - Флаг
 
@@ -371,9 +397,11 @@ namespace ExtendedBlitz.ViewModels
                         dispatcher.Invoke(new Action(() =>
                         {                            
                             ((StatSessionViewModel)StatSessionView.DataContext).Stats = Sessions[Sessions.Count - 1].StatSession.Average;
+                            ((StatSessionViewModel)StatSessionView.DataContext).VisibilityStats = IsShowWindowStats ? Visibility.Visible : Visibility.Hidden;
+                            ((DamageWindowViewModel)DamageWindowView.DataContext).VisibilityDamage = IsShowWindowDamage ? Visibility.Visible : Visibility.Hidden;
                         }));
 
-                        await Task.Delay(2 * 1000);
+                        await Task.Delay(1 * 1000);
                     }
                 }
             }, token);
