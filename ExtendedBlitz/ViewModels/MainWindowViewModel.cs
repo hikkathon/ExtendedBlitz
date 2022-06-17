@@ -445,13 +445,65 @@ namespace ExtendedBlitz.ViewModels
 
         #endregion
 
+        #region StartScannMemory
+
+        public ICommand StartScannMemoryCommand { get; }
+        private bool CanStartScannMemoryCommandExecuted(object p) 
+        {
+            MemoryScanner memoryScanner = new MemoryScanner("wotblitz.exe");
+
+            try
+            {
+                memoryScanner.GetBaseAddress();
+                return true;
+            }
+            catch (Exception exc)
+            {
+                return false;
+            }
+        }
+        private void OnStartScannMemoryCommandExecuted(object p)
+        {
+            MemoryScanner memoryScanner = new MemoryScanner("wotblitz.exe");
+            memoryScanner.GetProcessByName();
+            memoryScanner.GetBaseAddress();
+            // Damage
+            Int32 dmgAddr = memoryScanner.bAddress + 0x037643AC; // 1 базовый адрес 2 смещение +7B9DC = новое смещение для БА
+            Int32[] dmgOffsets = { 0x3C, 0x98, 0x70, 0x24, 0x1C }; // 0x94(old) + 0x8 = 0x9C(new)
+
+            // Blocked
+            Int32 blckAddr = memoryScanner.bAddress + 0x037643AC; // 1 базовый адрес 2 смещение
+            Int32[] blckOffsets = { 0x3C, 0x98, 0x70, 0x28, 0x1C };
+
+            Task task = new Task(async () =>
+            {
+                int count = 0;
+                while (true)
+                {
+                    count++;
+                    dispatcher.Invoke(new Action(() =>
+                    {
+                        int ts = memoryScanner.GetDamage();
+                        ((DamageWindowViewModel)DamageWindowView.DataContext).Damage = memoryScanner.GetDamage();
+                        ((DamageWindowViewModel)DamageWindowView.DataContext).DamageBlocked = memoryScanner.GetBlocked();
+                        Nickname = $" DAMAGE:{count}";
+                    }));
+
+                    await Task.Delay(1 * 1000);
+                }
+            });
+            task.Start();
+        }
+
+        #endregion
+
         #endregion
 
         /* ---------------------------------------------------------------------------------------------------- */
 
         public MainWindowViewModel()
         {
-            DateTime date = new DateTime(2022, 3, 20, 00, 00, 00); // 20.07.2015 18:30:25
+            DateTime date = new DateTime(2022, 5, 30, 00, 00, 00); // 20.07.2015 18:30:25
             long _time = DateTimeHelper.ToUnixTimestamp(date); // Время до которого прога будет работать
             long _timeCurrent = DateTimeHelper.ToUnixTimestamp(DateTime.Now); // Текущее время
             if(_timeCurrent > _time) IsTimeOut = true;
@@ -470,6 +522,7 @@ namespace ExtendedBlitz.ViewModels
             StartSessionCommand = new RelayCommand(OnStartSessionCommandExecuted, CanStartSessionCommandExecuted);
             CloseSessionCommand = new RelayCommand(OnCloseSessionCommandExecuted, CanCloseSessionCommandExecuted);
             SaveSettingCommandCommand = new RelayCommand(OnSaveSettingCommandExecuted, CanSaveSettingCommandExecuted);
+            StartScannMemoryCommand = new RelayCommand(OnStartScannMemoryCommandExecuted, CanStartScannMemoryCommandExecuted);
 
             #endregion
 

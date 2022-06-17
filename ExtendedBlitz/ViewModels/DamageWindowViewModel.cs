@@ -52,7 +52,7 @@ namespace ExtendedBlitz.ViewModels
 
         #region VisibilityDamage : Если активна то открыть окно статистики
 
-        private Visibility _visibilityDamage;
+        private Visibility _visibilityDamage = Visibility.Hidden;
 
         /// <summary>Окно статистики</summary>
         public Visibility VisibilityDamage
@@ -73,7 +73,7 @@ namespace ExtendedBlitz.ViewModels
             }
             catch (Exception exc)
             {
-                MessageBox.Show($"Игру запусти а потом оверлей\n\nException: {exc.Message}", $"Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Что бы использовать <Дамаг панель> запустите World of Tanks Blitz", $"Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
     }

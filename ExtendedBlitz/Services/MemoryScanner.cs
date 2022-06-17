@@ -17,6 +17,7 @@ namespace ExtendedBlitz.Services
 
         public int GetBaseAddress()
         {
+            string ts = $"{pName.Replace(".exe", String.Empty)}";
             Process process = Process.GetProcessesByName($"{pName.Replace(".exe", String.Empty)}")[0];
             bAddress = (int)process.MainModule.BaseAddress;
             return this.bAddress;
@@ -75,6 +76,19 @@ namespace ExtendedBlitz.Services
                 addr = BitConverter.ToInt32(ReadMemory((IntPtr)addr, (uint)4), 0) + offsets[i];
             }
             return addr;
+        }
+
+        public int GetDamage()
+        {
+            Int32 DealtAddress = bAddress + 0x038D9EB4;
+            Int32[] DealtOffset = { 0x3C, 0x68, 0x2C, 0x34, 0x70, 0x24, 0x20 };
+            return BitConverter.ToInt32(ReadMemory((IntPtr)ReadPointer(DealtAddress, DealtOffset), (uint)4), 0);
+        }
+        public int GetBlocked()
+        {
+            Int32 ReceivedAddress = bAddress + 0x038D9EB4;
+            Int32[] ReceivedOffset = { 0x3C, 0x68, 0x2C, 0x34, 0x70, 0x28, 0x20 };
+            return BitConverter.ToInt32(ReadMemory((IntPtr)ReadPointer(ReceivedAddress, ReceivedOffset), (uint)4), 0);
         }
 
         /// <summary> Нанесенный урон </summary>

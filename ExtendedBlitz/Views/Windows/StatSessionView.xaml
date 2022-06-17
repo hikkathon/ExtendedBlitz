@@ -10,7 +10,7 @@
         Topmost="True"
         WindowStartupLocation="Manual"
         AllowsTransparency="True"
-        WindowStyle="None" ShowInTaskbar="True">
+        WindowStyle="None" ShowInTaskbar="False">
 
     <Window.Background>
         <SolidColorBrush Opacity="0.0" Color="White"/>

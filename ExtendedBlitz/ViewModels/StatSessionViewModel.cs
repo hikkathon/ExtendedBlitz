@@ -20,7 +20,7 @@ namespace ExtendedBlitz.ViewModels
 
         #region VisibilityStats : Если активна то открыть окно статистики
 
-        private Visibility _visibilityStats;
+        private Visibility _visibilityStats = Visibility.Hidden;
 
         /// <summary>Окно статистики</summary>
         public Visibility VisibilityStats

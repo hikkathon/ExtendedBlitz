@@ -277,7 +277,7 @@
                                     <Image x:Name="ImgBlocked" Grid.Column="1"  Source="/Assets/Images/Blocked.png" Width="85" Height="18" HorizontalAlignment="Left" Opacity=".9"/>
                                     <TextBlock x:Name="BlockedText" Text="0" Margin="26 -20 0 0" Foreground="White" FontSize="18" FontWeight="Bold" Opacity=".9" Style="{StaticResource CustomFont}"/>
                                 </StackPanel>
-                                <Button Width="120" Height="32" HorizontalAlignment="Left" Margin="5" Style="{StaticResource StartSessionButton}" Content="Отслеживать"/>
+                                <Button Width="120" Height="32" HorizontalAlignment="Left" Margin="5" Command="{Binding StartScannMemoryCommand}" Content="Отслеживать"/>
                                 <TextBlock Text="Что бы активировать дамаг панель игра должна быть запущена!"/>
                             </StackPanel>
                         </TabItem>
